@@ -5,8 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class OtherData(
-    var interest: String?,
-    var email: String?
+    var email: String,
+    var nickname: String?
     ) : Parcelable{
 
     }

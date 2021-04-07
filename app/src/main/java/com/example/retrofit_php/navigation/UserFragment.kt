@@ -1,14 +1,12 @@
 package com.example.retrofit_php.navigation
 
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -17,6 +15,7 @@ import com.example.retrofit_php.R
 import com.example.retrofit_php.controller.UserInfoUpdate
 import com.example.retrofit_php.model.Interfaces.GetUserInfoInterface
 import com.example.retrofit_php.model.Interfaces.Repository
+import com.example.retrofit_php.model.data.GetUserDataResponse
 import com.example.retrofit_php.model.data.UserData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_set_interest.*
@@ -36,7 +35,7 @@ class UserFragment : Fragment() {
     lateinit var email: String
     private lateinit var userData: UserData
     private lateinit var getuserinfoapi: GetUserInfoInterface
-    private lateinit var swipeRefreshLayout : SwipeRefreshLayout
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     companion object {
         var PICK_PROFILE_FROM_ALBUM = 10
@@ -116,45 +115,27 @@ class UserFragment : Fragment() {
             getuserinfoapi = retrofit.create(GetUserInfoInterface::class.java)
         }
 
-        val call: Call<String> = getuserinfoapi.getUserData(email)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        val call: Call<GetUserDataResponse> = getuserinfoapi.getUserData(email)
+        call.enqueue(object : Callback<GetUserDataResponse> {
+            override fun onResponse(
+                call: Call<GetUserDataResponse>,
+                response: Response<GetUserDataResponse>
+            ) {
                 if (response.isSuccessful && response.body() != null) {
-                    Log.e("onSuccess1", response.body()!!)
+                    Log.e("onSuccess1", response.body()!!.toString())
 
-                    val jsonResponse = response.body()
-                    try {
-                        if (jsonResponse != null) {
-                            val data = jsonResponse.substring(5)
-                            val jsonObject = JSONObject(data)
+                    val jsonResponse = response.body()!!
+                    userData = UserData(
+                        email,
+                        jsonResponse.nickname, jsonResponse.age, jsonResponse.job,
+                        jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
+                    )
+                    setUserData(userData)
 
-                            val dataArray = jsonObject.getJSONArray("data")
-                            for (i in 0 until dataArray.length()) {
-                                val dataobj = dataArray.getJSONObject(i)
-
-
-                                val nickname = dataobj.getString("nickname")
-                                val age = dataobj.getString("age")
-                                val job = dataobj.getString("job")
-                                val interest1 = dataobj.getString("interest1")
-                                val interest2 = dataobj.getString("interest2")
-                                val interest3 = dataobj.getString("interest3")
-
-                                userData = UserData(
-                                    email, nickname, age, job, interest1, interest2, interest3
-                                )
-                                setUserData(userData)
-
-                            }
-
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<GetUserDataResponse>, t: Throwable) {
 
             }
 

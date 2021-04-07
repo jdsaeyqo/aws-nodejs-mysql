@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat
 import com.example.retrofit_php.R
 import com.example.retrofit_php.model.Interfaces.RegisterInterface
 import com.example.retrofit_php.model.Interfaces.Repository
+import com.example.retrofit_php.model.data.RegiResponse
+import com.example.retrofit_php.model.data.RegisterData
 import kotlinx.android.synthetic.main.activity_register.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,7 +21,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
-
 
     lateinit var registerapi: RegisterInterface
 
@@ -82,6 +83,8 @@ class RegisterActivity : AppCompatActivity() {
         val email = editEmail.text.toString()
         val password = editPass.text.toString()
 
+        val registerData = RegisterData(name,email,password)
+
 
         val retrofit = Repository.getApiClient()
 
@@ -89,47 +92,26 @@ class RegisterActivity : AppCompatActivity() {
             registerapi = retrofit.create(RegisterInterface::class.java)
         }
 
-        val call: Call<String> = registerapi.getUserRegist(name, email, password)
+        val call: Call<RegiResponse> = registerapi.getUserRegist(registerData)
 
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        call.enqueue(object : Callback<RegiResponse> {
+            override fun onResponse(call: Call<RegiResponse>, response: Response<RegiResponse>) {
                 if (response.isSuccessful && response.body() != null) {
-                    Log.e("onSuccess", response.body()!!)
+                    Log.e("onSuccess", response.body()!!.message)
 
-                    val jsonResponse = response.body()
-                    try {
-                        if (jsonResponse != null) {
-                            parseRegData(jsonResponse.substring(5))
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
+                    Toast.makeText(this@RegisterActivity,"회원가입 성공", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<RegiResponse>, t: Throwable) {
                 t.message?.let { Log.e("onFailure", it) }
+                Toast.makeText(this@RegisterActivity,"회원가입 에러 발생", Toast.LENGTH_SHORT).show()
+
             }
 
         })
 
     }
 
-
-    private fun parseRegData(jsonResponse: String) {
-        try {
-            val jsonObject = JSONObject(jsonResponse)
-            if (jsonObject.optString("status").equals("true")) {
-                Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show()
-
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-
-
-    }
 
 }

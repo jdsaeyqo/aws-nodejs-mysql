@@ -8,6 +8,8 @@ import android.widget.Toast
 import com.example.retrofit_php.R
 import com.example.retrofit_php.model.Interfaces.LoginInterface
 import com.example.retrofit_php.model.Interfaces.Repository
+import com.example.retrofit_php.model.data.LoginData
+import com.example.retrofit_php.model.data.LoginResponse
 import com.example.retrofit_php.model.data.UserData
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
@@ -48,30 +50,32 @@ class LoginActivity : AppCompatActivity() {
         val email  = editLoginEmail.text.toString()
         val password  = editLoginPass.text.toString()
 
+        val userlogin = LoginData(email,password)
         val retrofit = Repository.getApiClient()
 
         if (retrofit != null) {
             loginapi = retrofit.create(LoginInterface::class.java)
         }
 
-        val call : Call<String> = loginapi.getUserLogin(email,password)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        val call : Call<LoginResponse> = loginapi.getUserLogin(userlogin)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful && response.body() != null) {
-                    Log.e("onSuccess", response.body()!!)
-
+                    Log.e("onSuccess", response.body()!!.message)
+                    Toast.makeText(this@LoginActivity,"로그인 성공", Toast.LENGTH_SHORT).show()
                     val jsonResponse = response.body()
-                    try {
-                        if (jsonResponse != null) {
-                            parseLoginData(jsonResponse.substring(5))
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
+                    Log.e("responseBody", response.body()!!.email)
+
+                    val useremail = response.body()!!.email
+                    userData = UserData(useremail)
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra("userdata",userData)
+
+                    startActivity(intent)
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 t.message?.let { Log.e("onFailure", it) }
             }
 
@@ -79,49 +83,5 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun parseLoginData(jsonResponse: String) {
 
-        try {
-            val jsonObject = JSONObject(jsonResponse)
-
-            if(jsonObject.getString("status").equals("true")){
-                saveInfo(jsonResponse)
-                Toast.makeText(this,"로그인 성공", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this,jsonObject.getString("message"),Toast.LENGTH_SHORT).show()
-
-            }
-        }catch (e : JSONException){
-            e.printStackTrace()
-        }
-
-    }
-
-    private fun saveInfo(jsonResponse: String) {
-
-        try {
-            val jsonObject = JSONObject(jsonResponse)
-            if(jsonObject.getString("status").equals("true")){
-                val dataArray = jsonObject.getJSONArray("data")
-
-                for (i in 0 until dataArray.length()){
-
-                    val dataobj = dataArray.getJSONObject(i)
-                    email = dataobj.getString("email")
-
-                }
-
-                userData = UserData(email)
-
-            }
-        }catch (e : JSONException){
-            e.printStackTrace()
-        }
-
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("userdata",userData)
-
-        startActivity(intent)
-
-    }
 }

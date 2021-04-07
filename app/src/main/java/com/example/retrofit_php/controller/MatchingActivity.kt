@@ -8,31 +8,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofit_php.R
 import com.example.retrofit_php.model.Interfaces.GetUserInfoInterface
 import com.example.retrofit_php.model.Interfaces.Repository
+import com.example.retrofit_php.model.data.GetOtherDataResponse
+import com.example.retrofit_php.model.data.GetUserDataResponse
+import com.example.retrofit_php.model.data.OtherData
 import com.example.retrofit_php.model.data.UserAdapter
 import kotlinx.android.synthetic.main.activity_matching.*
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MatchingActivity : AppCompatActivity() {
 
-    lateinit var userData: String
-    private var email: String? = null
-    private var userEmailList: MutableList<String> = mutableListOf()
+    private var useremail: String? = null
+    private var otherDataList: MutableList<OtherData> = mutableListOf()
 
-    private val uAdapter = UserAdapter(this, userEmailList){
+    private val uAdapter = UserAdapter(this, otherDataList) {
         itemClick(it)
     }
-
-    private fun itemClick(email: String) {
-
-        val intent = Intent(this,UserDialogActivity::class.java)
-        intent.putExtra("email",email)
-        startActivity(intent)
-
-    }
-
+    lateinit var getuserapi: GetUserInfoInterface
     lateinit var getmatchapi: GetUserInfoInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,45 +37,46 @@ class MatchingActivity : AppCompatActivity() {
         userRecyclerView.layoutManager = lm
         userRecyclerView.setHasFixedSize(true)
 
-
         getInfo()
 
     }
 
+    private fun itemClick(otherData: OtherData) {
+
+        val intent = Intent(this, UserDialogActivity::class.java)
+        intent.putExtra("email", otherData.email)
+        startActivity(intent)
+
+    }
+
     private fun getInfo() {
-        email = intent.getStringExtra("useremail")
+
+        useremail = intent.getStringExtra("useremail")
 
         val retrofit = Repository.getApiClient()
-        if (retrofit != null) {
-            getmatchapi = retrofit.create(GetUserInfoInterface::class.java)
-        }
-        val call: Call<String>? = email?.let { getmatchapi.getUserData(it) }
 
-        call?.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        if (retrofit != null) {
+            getuserapi = retrofit.create(GetUserInfoInterface::class.java)
+        }
+        val call: Call<GetUserDataResponse>? = useremail?.let { getuserapi.getUserData(it) }
+
+        call?.enqueue(object : Callback<GetUserDataResponse> {
+            override fun onResponse(
+                call: Call<GetUserDataResponse>,
+                response: Response<GetUserDataResponse>
+            ) {
 
                 if (response.isSuccessful && response.body() != null) {
 
-                    userData = response.body()!!.substring(5)
-
-                    val jsonResponse = JSONObject(userData)
-
-                    val dataArray = jsonResponse.getJSONArray("data")
-
-                    for (i in 0 until dataArray.length()) {
-
-                        val dataobj = dataArray.getJSONObject(i)
-                        val interest1 = dataobj.getString("interest1")
-                        val interest2 = dataobj.getString("interest2")
-                        val interest3 = dataobj.getString("interest3")
-
-                        getMatchingUser(interest1,interest2,interest3)
-
-                    }
+                    val interest1 = response.body()!!.interest1
+                    val interest2 = response.body()!!.interest2
+                    val interest3 = response.body()!!.interest3
+                        getMatchingUser(interest1, interest2, interest3)
 
                 }
             }
-            override fun onFailure(call: Call<String>, t: Throwable) {
+
+            override fun onFailure(call: Call<GetUserDataResponse>, t: Throwable) {
 
                 t.message?.let { Log.e("onFailure", it) }
 
@@ -98,38 +92,31 @@ class MatchingActivity : AppCompatActivity() {
         if (retrofit != null) {
             getmatchapi = retrofit.create(GetUserInfoInterface::class.java)
         }
-        val call: Call<String> =getmatchapi.getMatchingUser(interest1,interest2,interest3)
+        val call: Call<GetOtherDataResponse> = getmatchapi.getMatchingUser(interest1, interest2, interest3)
 
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        call.enqueue(object : Callback<GetOtherDataResponse> {
+            override fun onResponse(call: Call<GetOtherDataResponse>, response: Response<GetOtherDataResponse>) {
 
                 if (response.isSuccessful && response.body() != null) {
 
-                    Log.d("matchAct",response.body().toString())
-                    userData = response.body()!!.substring(5)
+                    val res = response.body()!!.result
 
-
-                    val jsonResponse = JSONObject(userData)
-
-                    val dataArray = jsonResponse.getJSONArray("data")
-
-                    for (i in 0 until dataArray.length()) {
-
-                        val dataobj = dataArray.getJSONObject(i)
-                        val useremail = dataobj.getString("email")
-
-                        if(useremail != email){
-                            userEmailList.add(useremail)
+                    for (i in res.indices){
+                        if(res[i].email != useremail){
+                            val otherdata = OtherData(res[i].email,res[i].nickname)
+                            otherDataList.add(otherdata)
                         }
+
 
                     }
                     uAdapter.notifyDataSetChanged()
+
 
                 }
 
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<GetOtherDataResponse>, t: Throwable) {
 
                 t.message?.let { Log.e("onFailure", it) }
 
