@@ -4,15 +4,14 @@ package com.example.retrofit_php.controller
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.example.retrofit_php.R
-import com.example.retrofit_php.model.data.UserData
+import com.example.retrofit_php.model.DataModel
 import com.example.retrofit_php.navigation.MainFragment
 import com.example.retrofit_php.navigation.UserFragment
-
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var userData: UserData
+    lateinit var userData: DataModel.UserData
     lateinit var userEmail : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     private fun userDataUpdate() {
 
-        userData = intent.getParcelableExtra<UserData>("userdata")!!
+        userData = intent.getParcelableExtra("userdata")!!
         userEmail=userData.email.toString()
 
             Log.d("MainActivityUserEmail",userData.email.toString())

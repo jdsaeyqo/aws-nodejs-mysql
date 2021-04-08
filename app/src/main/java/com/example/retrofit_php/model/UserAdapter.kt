@@ -1,4 +1,4 @@
-package com.example.retrofit_php.model.data
+package com.example.retrofit_php.model
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.example.retrofit_php.R
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
-class UserAdapter(private val context: Context, private val userList:MutableList<OtherData>,val itemClick : (OtherData) -> Unit ):
+class UserAdapter(private val context: Context, private val userList:MutableList<DataModel.OtherData>, val itemClick : (DataModel.OtherData) -> Unit ):
     RecyclerView.Adapter<UserAdapter.Holder>() {
 
 
@@ -62,7 +62,7 @@ class UserAdapter(private val context: Context, private val userList:MutableList
         val userImage: ImageView = itemView.findViewById(R.id.userImage)
         val userEmail: TextView = itemView.findViewById(R.id.userEmail)
 
-        fun bind(ohterdata : OtherData ){
+        fun bind(ohterdata : DataModel.OtherData){
             itemView.setOnClickListener { itemClick(ohterdata) }
         }
     }

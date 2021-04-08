@@ -2,27 +2,25 @@ package com.example.retrofit_php.controller
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.retrofit_php.R
-import com.example.retrofit_php.model.Interfaces.RegisterInterface
-import com.example.retrofit_php.model.Interfaces.Repository
-import com.example.retrofit_php.model.data.RegiResponse
-import com.example.retrofit_php.model.data.RegisterData
+import com.example.retrofit_php.model.DataModel
+import com.example.retrofit_php.model.InterfaceModel
+import com.example.retrofit_php.model.Repository
+import com.example.retrofit_php.model.ResponseModel
 import kotlinx.android.synthetic.main.activity_register.*
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
-    lateinit var registerapi: RegisterInterface
+    lateinit var registerapi: InterfaceModel.RegisterInterface
 
 
 
@@ -79,31 +77,36 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun doRegister() {
-        val name = editName.text.toString()
-        val email = editEmail.text.toString()
-        val password = editPass.text.toString()
 
-        val registerData = RegisterData(name,email,password)
+        val name = editName.text.toString().trim()
+        val email = editEmail.text.toString().trim()
+        val password = editPass.text.toString().trim()
+
+        if(name.isEmpty() || email.isEmpty() || password.isEmpty()){
+            Toast.makeText(this,"빈 칸을 입력해 주세요",Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val registerData = DataModel.RegisterData(name,email,password)
 
 
         val retrofit = Repository.getApiClient()
 
         if (retrofit != null) {
-            registerapi = retrofit.create(RegisterInterface::class.java)
+            registerapi = retrofit.create(InterfaceModel.RegisterInterface::class.java)
         }
 
-        val call: Call<RegiResponse> = registerapi.getUserRegist(registerData)
+        val call: Call<ResponseModel.RegisterResponse> = registerapi.getUserRegist(registerData)
 
-        call.enqueue(object : Callback<RegiResponse> {
-            override fun onResponse(call: Call<RegiResponse>, response: Response<RegiResponse>) {
+        call.enqueue(object : Callback<ResponseModel.RegisterResponse> {
+            override fun onResponse(call: Call<ResponseModel.RegisterResponse>, response: Response<ResponseModel.RegisterResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     Log.e("onSuccess", response.body()!!.message)
-
-                    Toast.makeText(this@RegisterActivity,"회원가입 성공", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegisterActivity,response.body()!!.message, Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<RegiResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseModel.RegisterResponse>, t: Throwable) {
                 t.message?.let { Log.e("onFailure", it) }
                 Toast.makeText(this@RegisterActivity,"회원가입 에러 발생", Toast.LENGTH_SHORT).show()
 

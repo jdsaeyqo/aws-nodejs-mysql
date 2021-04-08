@@ -1,27 +1,24 @@
 package com.example.retrofit_php.controller
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.retrofit_php.R
-import com.example.retrofit_php.model.Interfaces.LoginInterface
-import com.example.retrofit_php.model.Interfaces.Repository
-import com.example.retrofit_php.model.data.LoginData
-import com.example.retrofit_php.model.data.LoginResponse
-import com.example.retrofit_php.model.data.UserData
+import com.example.retrofit_php.model.DataModel
+import com.example.retrofit_php.model.InterfaceModel
+import com.example.retrofit_php.model.Repository
+import com.example.retrofit_php.model.ResponseModel
 import kotlinx.android.synthetic.main.activity_login.*
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var  userData : UserData
-    lateinit var loginapi : LoginInterface
+    lateinit var  userData : DataModel.UserData
+    lateinit var loginapi : InterfaceModel.LoginInterface
 
     lateinit var name : String
     lateinit var email : String
@@ -50,16 +47,16 @@ class LoginActivity : AppCompatActivity() {
         val email  = editLoginEmail.text.toString()
         val password  = editLoginPass.text.toString()
 
-        val userlogin = LoginData(email,password)
+        val userlogin = DataModel.LoginData(email,password)
         val retrofit = Repository.getApiClient()
 
         if (retrofit != null) {
-            loginapi = retrofit.create(LoginInterface::class.java)
+            loginapi = retrofit.create(InterfaceModel.LoginInterface::class.java)
         }
 
-        val call : Call<LoginResponse> = loginapi.getUserLogin(userlogin)
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+        val call : Call<ResponseModel.LoginResponse> = loginapi.getUserLogin(userlogin)
+        call.enqueue(object : Callback<ResponseModel.LoginResponse> {
+            override fun onResponse(call: Call<ResponseModel.LoginResponse>, response: Response<ResponseModel.LoginResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     Log.e("onSuccess", response.body()!!.message)
                     Toast.makeText(this@LoginActivity,"로그인 성공", Toast.LENGTH_SHORT).show()
@@ -67,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("responseBody", response.body()!!.email)
 
                     val useremail = response.body()!!.email
-                    userData = UserData(useremail)
+                    userData = DataModel.UserData(useremail)
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.putExtra("userdata",userData)
 
@@ -75,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseModel.LoginResponse>, t: Throwable) {
                 t.message?.let { Log.e("onFailure", it) }
             }
 

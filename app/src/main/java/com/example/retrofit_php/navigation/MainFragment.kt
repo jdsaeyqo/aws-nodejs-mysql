@@ -7,16 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.retrofit_php.controller.MatchingActivity
 import com.example.retrofit_php.R
-import com.example.retrofit_php.model.data.UserData
+import com.example.retrofit_php.controller.MatchingActivity
+import com.example.retrofit_php.model.DataModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : Fragment() {
 
     var fragmentView: View? = null
-    private lateinit var userData: UserData
+    private lateinit var userData: DataModel.UserData
 
     override fun onCreateView(
         inflater: LayoutInflater,

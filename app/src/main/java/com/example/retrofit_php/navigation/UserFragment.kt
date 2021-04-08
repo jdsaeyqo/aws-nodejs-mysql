@@ -13,16 +13,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.retrofit_php.R
 import com.example.retrofit_php.controller.UserInfoUpdate
-import com.example.retrofit_php.model.Interfaces.GetUserInfoInterface
-import com.example.retrofit_php.model.Interfaces.Repository
-import com.example.retrofit_php.model.data.GetUserDataResponse
-import com.example.retrofit_php.model.data.UserData
+import com.example.retrofit_php.model.DataModel
+import com.example.retrofit_php.model.InterfaceModel
+import com.example.retrofit_php.model.Repository
+import com.example.retrofit_php.model.ResponseModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_set_interest.*
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,8 +31,8 @@ class UserFragment : Fragment() {
     var fragmentView: View? = null
 
     lateinit var email: String
-    private lateinit var userData: UserData
-    private lateinit var getuserinfoapi: GetUserInfoInterface
+    private lateinit var userData: DataModel.UserData
+    private lateinit var getuserinfoapi: InterfaceModel.GetUserInfoInterface
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     companion object {
@@ -112,20 +110,20 @@ class UserFragment : Fragment() {
         val retrofit = Repository.getApiClient()
 
         if (retrofit != null) {
-            getuserinfoapi = retrofit.create(GetUserInfoInterface::class.java)
+            getuserinfoapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
         }
 
-        val call: Call<GetUserDataResponse> = getuserinfoapi.getUserData(email)
-        call.enqueue(object : Callback<GetUserDataResponse> {
+        val call: Call<ResponseModel.GetUserDataResponse> = getuserinfoapi.getUserData(email)
+        call.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
             override fun onResponse(
-                call: Call<GetUserDataResponse>,
-                response: Response<GetUserDataResponse>
+                call: Call<ResponseModel.GetUserDataResponse>,
+                response: Response<ResponseModel.GetUserDataResponse>
             ) {
                 if (response.isSuccessful && response.body() != null) {
                     Log.e("onSuccess1", response.body()!!.toString())
 
                     val jsonResponse = response.body()!!
-                    userData = UserData(
+                    userData = DataModel.UserData(
                         email,
                         jsonResponse.nickname, jsonResponse.age, jsonResponse.job,
                         jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
@@ -135,7 +133,7 @@ class UserFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<GetUserDataResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseModel.GetUserDataResponse>, t: Throwable) {
 
             }
 
@@ -144,7 +142,7 @@ class UserFragment : Fragment() {
 
     }
 
-    private fun setUserData(userData: UserData) {
+    private fun setUserData(userData: DataModel.UserData) {
 
         if (userData.nickname != "null") {
             textNickname.text = userData.nickname

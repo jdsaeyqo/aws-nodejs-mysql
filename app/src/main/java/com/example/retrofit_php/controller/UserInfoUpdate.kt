@@ -1,16 +1,15 @@
 package com.example.retrofit_php.controller
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.retrofit_php.R
-import com.example.retrofit_php.model.Interfaces.Repository
-import com.example.retrofit_php.model.Interfaces.UpdateUserInfo
-import com.example.retrofit_php.model.data.GetUserDataResponse
-import com.example.retrofit_php.model.data.UpdataUserdataResponse
-import com.example.retrofit_php.model.data.UserData
+import com.example.retrofit_php.model.DataModel
+import com.example.retrofit_php.model.InterfaceModel
+import com.example.retrofit_php.model.Repository
+import com.example.retrofit_php.model.ResponseModel
 import kotlinx.android.synthetic.main.activity_user_info_update.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,11 +18,11 @@ import retrofit2.Response
 class UserInfoUpdate : AppCompatActivity() {
 
     lateinit var userEmail : String
-    lateinit var userdata : UserData
+    lateinit var userdata : DataModel.UserData
 
     lateinit var interestTextArray : Array<TextView>
 
-    lateinit var updateapi : UpdateUserInfo
+    lateinit var updateapi : InterfaceModel.UpdateUserInfo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info_update)
@@ -86,20 +85,20 @@ class UserInfoUpdate : AppCompatActivity() {
         val interest2 = editInterest2.text.toString()
         val interest3 = editInterest3.text.toString()
 
-        userdata = UserData(userEmail,nickname, age, job, interest1, interest2, interest3)
+        userdata = DataModel.UserData(userEmail,nickname, age, job, interest1, interest2, interest3)
 
         val retrofit = Repository.getApiClient()
 
         if(retrofit != null){
-            updateapi = retrofit.create(UpdateUserInfo::class.java)
+            updateapi = retrofit.create(InterfaceModel.UpdateUserInfo::class.java)
 
         }
 
-        val call : Call<UpdataUserdataResponse> = updateapi.updateUserInfo(userdata)
+        val call : Call<ResponseModel.UpdataUserdataResponse> = updateapi.updateUserInfo(userdata)
 
-        call.enqueue(object : Callback<UpdataUserdataResponse>{
+        call.enqueue(object : Callback<ResponseModel.UpdataUserdataResponse>{
 
-            override fun onResponse(call: Call<UpdataUserdataResponse>, response: Response<UpdataUserdataResponse>) {
+            override fun onResponse(call: Call<ResponseModel.UpdataUserdataResponse>, response: Response<ResponseModel.UpdataUserdataResponse>) {
 
                 if (response.isSuccessful && response.body() != null){
 
@@ -108,7 +107,7 @@ class UserInfoUpdate : AppCompatActivity() {
 
                 }
             }
-            override fun onFailure(call: Call<UpdataUserdataResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseModel.UpdataUserdataResponse>, t: Throwable) {
 
                 t.message?.let { Log.e("onFailure", it) }
             }

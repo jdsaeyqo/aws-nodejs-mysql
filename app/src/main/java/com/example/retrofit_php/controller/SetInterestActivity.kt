@@ -1,9 +1,9 @@
 package com.example.retrofit_php.controller
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.retrofit_php.R
 import kotlinx.android.synthetic.main.activity_set_interest.*

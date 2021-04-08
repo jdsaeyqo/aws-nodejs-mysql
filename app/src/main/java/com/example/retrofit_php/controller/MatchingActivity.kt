@@ -1,17 +1,12 @@
 package com.example.retrofit_php.controller
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofit_php.R
-import com.example.retrofit_php.model.Interfaces.GetUserInfoInterface
-import com.example.retrofit_php.model.Interfaces.Repository
-import com.example.retrofit_php.model.data.GetOtherDataResponse
-import com.example.retrofit_php.model.data.GetUserDataResponse
-import com.example.retrofit_php.model.data.OtherData
-import com.example.retrofit_php.model.data.UserAdapter
+import com.example.retrofit_php.model.*
 import kotlinx.android.synthetic.main.activity_matching.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,13 +15,13 @@ import retrofit2.Response
 class MatchingActivity : AppCompatActivity() {
 
     private var useremail: String? = null
-    private var otherDataList: MutableList<OtherData> = mutableListOf()
+    private var otherDataList: MutableList<DataModel.OtherData> = mutableListOf()
 
     private val uAdapter = UserAdapter(this, otherDataList) {
         itemClick(it)
     }
-    lateinit var getuserapi: GetUserInfoInterface
-    lateinit var getmatchapi: GetUserInfoInterface
+    lateinit var getuserapi: InterfaceModel.GetUserInfoInterface
+    lateinit var getmatchapi: InterfaceModel.GetUserInfoInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +36,7 @@ class MatchingActivity : AppCompatActivity() {
 
     }
 
-    private fun itemClick(otherData: OtherData) {
+    private fun itemClick(otherData: DataModel.OtherData) {
 
         val intent = Intent(this, UserDialogActivity::class.java)
         intent.putExtra("email", otherData.email)
@@ -56,14 +51,14 @@ class MatchingActivity : AppCompatActivity() {
         val retrofit = Repository.getApiClient()
 
         if (retrofit != null) {
-            getuserapi = retrofit.create(GetUserInfoInterface::class.java)
+            getuserapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
         }
-        val call: Call<GetUserDataResponse>? = useremail?.let { getuserapi.getUserData(it) }
+        val call: Call<ResponseModel.GetUserDataResponse>? = useremail?.let { getuserapi.getUserData(it) }
 
-        call?.enqueue(object : Callback<GetUserDataResponse> {
+        call?.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
             override fun onResponse(
-                call: Call<GetUserDataResponse>,
-                response: Response<GetUserDataResponse>
+                call: Call<ResponseModel.GetUserDataResponse>,
+                response: Response<ResponseModel.GetUserDataResponse>
             ) {
 
                 if (response.isSuccessful && response.body() != null) {
@@ -76,7 +71,7 @@ class MatchingActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<GetUserDataResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseModel.GetUserDataResponse>, t: Throwable) {
 
                 t.message?.let { Log.e("onFailure", it) }
 
@@ -90,12 +85,12 @@ class MatchingActivity : AppCompatActivity() {
 
         val retrofit = Repository.getApiClient()
         if (retrofit != null) {
-            getmatchapi = retrofit.create(GetUserInfoInterface::class.java)
+            getmatchapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
         }
-        val call: Call<GetOtherDataResponse> = getmatchapi.getMatchingUser(interest1, interest2, interest3)
+        val call: Call<ResponseModel.GetOtherDataResponse> = getmatchapi.getMatchingUser(interest1, interest2, interest3)
 
-        call.enqueue(object : Callback<GetOtherDataResponse> {
-            override fun onResponse(call: Call<GetOtherDataResponse>, response: Response<GetOtherDataResponse>) {
+        call.enqueue(object : Callback<ResponseModel.GetOtherDataResponse> {
+            override fun onResponse(call: Call<ResponseModel.GetOtherDataResponse>, response: Response<ResponseModel.GetOtherDataResponse>) {
 
                 if (response.isSuccessful && response.body() != null) {
 
@@ -103,7 +98,7 @@ class MatchingActivity : AppCompatActivity() {
 
                     for (i in res.indices){
                         if(res[i].email != useremail){
-                            val otherdata = OtherData(res[i].email,res[i].nickname)
+                            val otherdata = DataModel.OtherData(res[i].email,res[i].nickname)
                             otherDataList.add(otherdata)
                         }
 
@@ -116,7 +111,7 @@ class MatchingActivity : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: Call<GetOtherDataResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseModel.GetOtherDataResponse>, t: Throwable) {
 
                 t.message?.let { Log.e("onFailure", it) }
 
