@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -31,6 +32,7 @@ class UserFragment : Fragment() {
     var fragmentView: View? = null
 
     lateinit var email: String
+    private lateinit var imageProgressBar : ProgressBar
     private lateinit var userData: DataModel.UserData
     private lateinit var getuserinfoapi: InterfaceModel.GetUserInfoInterface
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -39,13 +41,11 @@ class UserFragment : Fragment() {
         var PICK_PROFILE_FROM_ALBUM = 10
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         fragmentView =
             LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
@@ -69,6 +69,7 @@ class UserFragment : Fragment() {
 
         swipeRefreshLayout = fragmentView!!.findViewById(R.id.swipeLayout)
         swipeRefreshLayout.setOnRefreshListener {
+            getProfileImage()
             getUserInfo()
             swipeRefreshLayout.isRefreshing = false
         }
@@ -105,7 +106,6 @@ class UserFragment : Fragment() {
     }
 
     private fun getUserInfo() {
-
 
         val retrofit = Repository.getApiClient()
 
@@ -177,25 +177,24 @@ class UserFragment : Fragment() {
     private fun getProfileImage() {
 
 
-        email.let {
-            FirebaseFirestore.getInstance().collection("profileImages").document(
-                it
-            ).addSnapshotListener { value, error ->
-                if (value == null) return@addSnapshotListener
+            email.let {
+                FirebaseFirestore.getInstance().collection("profileImages").document(
+                    it
+                ).addSnapshotListener { value,_ ->
+                    if (value == null) return@addSnapshotListener
 
-                if (value.data != null) {
-                    val url = value.data!!["image"]
+                    if (value.data != null) {
+                        val url = value.data!!["imageUri"] ?: return@addSnapshotListener
 
+                        fragmentView?.let { it1 ->
 
-                    fragmentView?.let { it1 ->
-                        Glide.with(this).load(url).apply(RequestOptions().circleCrop())
-                            .into(it1.userProfileImage)
-                    }
+                            Glide.with(context!!).load(url).apply(RequestOptions().circleCrop())
+                                .into(it1.userProfileImage)
+                        }
 
-                } else return@addSnapshotListener
+                    } else return@addSnapshotListener
+                }
             }
-        }
-
 
     }
 

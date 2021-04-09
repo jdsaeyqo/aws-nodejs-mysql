@@ -38,7 +38,7 @@ class UserAdapter(private val context: Context, private val userList:MutableList
                 }
 
                 if (value.data != null) {
-                    val url = value.data!!["image"]
+                    val url = value.data!!["imageUri"]
 
                         Glide.with(context).load(url).apply(RequestOptions().circleCrop())
                             .into(holder.userImage)

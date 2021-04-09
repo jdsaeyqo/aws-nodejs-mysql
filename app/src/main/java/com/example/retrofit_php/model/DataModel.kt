@@ -50,6 +50,16 @@ class DataModel {
     }
 
 
+    data class FavoriteData(
+
+        var imageUri : String? = null,
+        var iLikeCount : Int = 0,
+        var likemeCount : Int = 0,
+        var iLike : MutableMap<String,Boolean> = HashMap(),
+        var likeMe : MutableMap<String,Boolean> = HashMap()
+    ){
+
+    }
 
 
 

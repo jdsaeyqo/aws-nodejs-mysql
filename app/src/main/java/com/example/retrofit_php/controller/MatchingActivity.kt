@@ -14,7 +14,7 @@ import retrofit2.Response
 
 class MatchingActivity : AppCompatActivity() {
 
-    private var useremail: String? = null
+    private var myEmail: String? = null
     private var otherDataList: MutableList<DataModel.OtherData> = mutableListOf()
 
     private val uAdapter = UserAdapter(this, otherDataList) {
@@ -39,21 +39,22 @@ class MatchingActivity : AppCompatActivity() {
     private fun itemClick(otherData: DataModel.OtherData) {
 
         val intent = Intent(this, UserDialogActivity::class.java)
-        intent.putExtra("email", otherData.email)
+        intent.putExtra("otheremail", otherData.email)
+        intent.putExtra("myemail", myEmail)
         startActivity(intent)
 
     }
 
     private fun getInfo() {
 
-        useremail = intent.getStringExtra("useremail")
+        myEmail = intent.getStringExtra("useremail")
 
         val retrofit = Repository.getApiClient()
 
         if (retrofit != null) {
             getuserapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
         }
-        val call: Call<ResponseModel.GetUserDataResponse>? = useremail?.let { getuserapi.getUserData(it) }
+        val call: Call<ResponseModel.GetUserDataResponse>? = myEmail?.let { getuserapi.getUserData(it) }
 
         call?.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
             override fun onResponse(
@@ -97,7 +98,7 @@ class MatchingActivity : AppCompatActivity() {
                     val res = response.body()!!.result
 
                     for (i in res.indices){
-                        if(res[i].email != useremail){
+                        if(res[i].email != myEmail){
                             val otherdata = DataModel.OtherData(res[i].email,res[i].nickname)
                             otherDataList.add(otherdata)
                         }

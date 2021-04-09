@@ -13,6 +13,7 @@ import com.example.retrofit_php.model.DataModel
 import com.example.retrofit_php.model.InterfaceModel
 import com.example.retrofit_php.model.Repository
 import com.example.retrofit_php.model.ResponseModel
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_register.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -101,6 +102,10 @@ class RegisterActivity : AppCompatActivity() {
         call.enqueue(object : Callback<ResponseModel.RegisterResponse> {
             override fun onResponse(call: Call<ResponseModel.RegisterResponse>, response: Response<ResponseModel.RegisterResponse>) {
                 if (response.isSuccessful && response.body() != null) {
+
+                    val dto = DataModel.FavoriteData()
+                    FirebaseFirestore.getInstance().collection("profileImages").document(email).set(dto)
+
                     Log.e("onSuccess", response.body()!!.message)
                     Toast.makeText(this@RegisterActivity,response.body()!!.message, Toast.LENGTH_SHORT).show()
                 }

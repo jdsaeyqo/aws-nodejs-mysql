@@ -3,6 +3,7 @@ package com.example.retrofit_php.controller
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -21,7 +22,9 @@ import retrofit2.Response
 
 class UserDialogActivity : AppCompatActivity() {
 
-    lateinit var useremail: String
+    lateinit var myEmail: String
+    lateinit var otherEmail: String
+    lateinit var fireStore  :FirebaseFirestore
     lateinit var getuserinfoapi: InterfaceModel.GetUserInfoInterface
     lateinit var userData: DataModel.UserData
 
@@ -30,27 +33,88 @@ class UserDialogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_userdialog)
 
-        useremail = intent.getStringExtra("email").toString()
-
+        myEmail = intent.getStringExtra("myemail").toString()
+        otherEmail = intent.getStringExtra("otheremail").toString()
+        fireStore = FirebaseFirestore.getInstance()
 
         getProfileImage()
         getUserInfo()
+
+        btnLike.setOnClickListener {
+            favoriteEvent()
+        }
 
         btnClose.setOnClickListener {
             finish()
         }
     }
 
+    private fun favoriteEvent() {
+
+        val tsOtherDoc = fireStore.collection("profileImages").document(otherEmail)
+        val tsMyDoc = fireStore.collection("profileImages").document(myEmail)
+
+        fireStore.runTransaction {
+
+            val favoriteOtherData = it.get(tsOtherDoc).toObject(DataModel.FavoriteData::class.java)
+            val favoriteMyData = it.get(tsMyDoc).toObject(DataModel.FavoriteData::class.java)
+
+            if(favoriteMyData == null){
+                Toast.makeText(this,"프로필 사진을 등록 해 주세요",Toast.LENGTH_SHORT).show()
+            }
+
+            if(favoriteOtherData == null){
+                Toast.makeText(this,"상대가 프로필 사진을 등록하지 안았습니다",Toast.LENGTH_SHORT).show()
+
+            }
+
+            if (favoriteOtherData != null) {
+
+                //좋아요 버튼 안 눌렀을 떄
+                if(!favoriteOtherData.likeMe.contains(myEmail)){
+                    favoriteOtherData.likeMe[myEmail] = true
+                    favoriteOtherData.likemeCount++
+
+                    if (favoriteMyData != null) {
+                        favoriteMyData.iLike[otherEmail] = true
+                        favoriteMyData.iLikeCount++
+                    }
+
+                    btnLike.setImageResource(R.drawable.ic_favorite_on)
+
+                //좋아요 버튼 이미 눌렀을 때
+                }else{
+                    favoriteOtherData.likeMe.remove(myEmail)
+                    favoriteOtherData.likemeCount--
+
+                    if (favoriteMyData != null) {
+                        favoriteMyData.iLike.remove(otherEmail)
+                        favoriteMyData.iLikeCount--
+                    }
+
+                    btnLike.setImageResource(R.drawable.ic_favorite_off)
+
+                }
+                it.set(tsOtherDoc,favoriteOtherData)
+                it.set(tsMyDoc,favoriteMyData!!)
+
+            }
+        }
+
+
+    }
+
     private fun getProfileImage() {
-        useremail.let {
-            FirebaseFirestore.getInstance().collection("profileImages").document(
+        otherEmail.let {
+            fireStore.collection("profileImages").document(
                 it
             ).addSnapshotListener { value, error ->
                 if (value == null) return@addSnapshotListener
 
                 if (value.data != null) {
-                    val url = value.data!!["image"]
+                    val url = value.data!!["imageUri"]
 
+                    if(this.isFinishing)return@addSnapshotListener
                     Glide.with(this).load(url).apply(RequestOptions().circleCrop())
                         .into(userProfileImageView)
 
@@ -67,7 +131,7 @@ class UserDialogActivity : AppCompatActivity() {
             getuserinfoapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
         }
 
-        val call: Call<ResponseModel.GetUserDataResponse> = getuserinfoapi.getUserData(useremail)
+        val call: Call<ResponseModel.GetUserDataResponse> = getuserinfoapi.getUserData(otherEmail)
         call.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
             override fun onResponse(
                 call: Call<ResponseModel.GetUserDataResponse>,
@@ -78,7 +142,7 @@ class UserDialogActivity : AppCompatActivity() {
 
                     val jsonResponse = response.body()!!
                     userData = DataModel.UserData(
-                        useremail,
+                        otherEmail,
                         jsonResponse.nickname, jsonResponse.age, jsonResponse.job,
                         jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
                     )
@@ -94,6 +158,26 @@ class UserDialogActivity : AppCompatActivity() {
             }
 
         })
+
+        val tsDoc = fireStore.collection("profileImages").document(otherEmail)
+
+        fireStore.runTransaction {
+
+            val favoriteData = it.get(tsDoc).toObject(DataModel.FavoriteData::class.java)
+
+            if (favoriteData != null) {
+                if(!favoriteData.likeMe.contains(myEmail)){
+                    btnLike.setImageResource(R.drawable.ic_favorite_off)
+
+                }else{
+                    btnLike.setImageResource(R.drawable.ic_favorite_on)
+                }
+                it.set(tsDoc,favoriteData)
+
+            }
+        }
+
+
 
     }
 

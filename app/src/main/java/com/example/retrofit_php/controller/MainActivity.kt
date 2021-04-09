@@ -98,9 +98,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     storageRef.putFile(imageUri).continueWithTask {
                         return@continueWithTask storageRef.downloadUrl
                     }.addOnSuccessListener {
-                        val map = HashMap<String,Any>()
-                        map["image"] = it.toString()
-                        FirebaseFirestore.getInstance().collection("profileImages").document(userEmail).set(map)
+
+                        val tsDoc = FirebaseFirestore.getInstance().collection("profileImages").document(userEmail)
+                        tsDoc.update("imageUri",it.toString())
 
                     }
 

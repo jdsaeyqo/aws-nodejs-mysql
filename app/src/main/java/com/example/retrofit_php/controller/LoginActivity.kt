@@ -44,8 +44,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser() {
 
-        val email  = editLoginEmail.text.toString()
-        val password  = editLoginPass.text.toString()
+        val email  = editLoginEmail.text.toString().trim()
+        val password  = editLoginPass.text.toString().trim()
+
+        if(email.isEmpty() || password.isEmpty()){
+            Toast.makeText(this,"빈 칸을 입력해 주세요",Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val userlogin = DataModel.LoginData(email,password)
         val retrofit = Repository.getApiClient()
