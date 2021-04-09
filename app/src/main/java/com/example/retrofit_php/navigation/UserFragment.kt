@@ -13,6 +13,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.retrofit_php.R
+import com.example.retrofit_php.controller.ILikeDialogActivity
+import com.example.retrofit_php.controller.LikeMeDialogActivity
 import com.example.retrofit_php.controller.UserInfoUpdate
 import com.example.retrofit_php.model.DataModel
 import com.example.retrofit_php.model.InterfaceModel
@@ -32,7 +34,6 @@ class UserFragment : Fragment() {
     var fragmentView: View? = null
 
     lateinit var email: String
-    private lateinit var imageProgressBar : ProgressBar
     private lateinit var userData: DataModel.UserData
     private lateinit var getuserinfoapi: InterfaceModel.GetUserInfoInterface
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -61,9 +62,24 @@ class UserFragment : Fragment() {
         getProfileImage()
         getUserInfo()
 
+        fragmentView?.I_like?.setOnClickListener {
+
+            val intent = Intent(activity,ILikeDialogActivity::class.java)
+            intent.putExtra("myemail",email)
+            startActivity(intent)
+
+        }
+        fragmentView?.like_me?.setOnClickListener {
+
+            val intent = Intent(activity,LikeMeDialogActivity::class.java)
+            intent.putExtra("myemail",email)
+            startActivity(intent)
+
+        }
+
         fragmentView?.updateProfile?.setOnClickListener {
 
-            sendTextandStartUpdateAvtivity()
+            sendTextAndStartUpdateActivity()
 
         }
 
@@ -78,7 +94,7 @@ class UserFragment : Fragment() {
     }
 
 
-    private fun sendTextandStartUpdateAvtivity() {
+    private fun sendTextAndStartUpdateActivity() {
         val intent = Intent(activity, UserInfoUpdate::class.java)
 
         intent.putExtra("email", userData.email)
@@ -188,8 +204,11 @@ class UserFragment : Fragment() {
 
                         fragmentView?.let { it1 ->
 
-                            Glide.with(context!!).load(url).apply(RequestOptions().circleCrop())
-                                .into(it1.userProfileImage)
+                           if(activity != null){
+                               Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop())
+                                   .into(it1.userProfileImage)
+                           }
+
                         }
 
                     } else return@addSnapshotListener

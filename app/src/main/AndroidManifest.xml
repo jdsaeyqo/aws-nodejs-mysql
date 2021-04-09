@@ -13,13 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Retrofit_php"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".controller.ILikeDialogActivity"
+            android:theme="@style/Transparent" />
+        <activity
+            android:name=".controller.LikeMeDialogActivity"
+            android:theme="@style/Transparent" />
         <activity android:name=".controller.SetInterestActivity" />
         <activity
             android:name=".controller.UserDialogActivity"
             android:theme="@style/Transparent" />
-
-
-
         <activity android:name=".controller.UserInfoUpdate" />
         <activity android:name=".controller.MatchingActivity" />
         <activity android:name=".controller.RegisterActivity">
