@@ -1,6 +1,7 @@
 package com.example.retrofit_php.navigation
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -158,16 +159,17 @@ class UserFragment : Fragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUserData(userData: DataModel.UserData) {
 
-        if (userData.nickname != "null") {
-            textNickname.text = userData.nickname
+        if (userData.nickname != null) {
+            textNickname.text = "닉네임 : ${userData.nickname}"
         }
-        if (userData.age != "null") {
-            textAge.text = userData.age
+        if (userData.age != null) {
+            textAge.text = "나이 : ${userData.age}"
         }
-        if (userData.job != "null") {
-            textJob.text = userData.job
+        if (userData.job != null) {
+            textJob.text = "직업 : ${userData.job}"
         }
         if (userData.interest1 != "null") {
             textInterest1.text = userData.interest1

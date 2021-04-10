@@ -44,14 +44,14 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatButton
-
                     android:id="@+id/intertestBtn1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
+                    android:fontFamily="@font/font1"
                     android:gravity="center"
-                    android:text="1"
+                    android:text="음악"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -61,7 +61,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="2"
+                    android:text="영화"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -84,7 +85,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="3"
+                    android:text="노래"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -94,7 +96,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="4"
+                    android:text="운동"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -117,7 +120,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="5"
+                    android:text="게임"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -127,7 +131,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="6"
+                    android:text="미술"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -150,7 +155,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="7"
+                    android:text="공예"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -160,7 +166,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="8"
+                    android:text="공연"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -183,7 +190,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="9"
+                    android:text="독서"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -191,9 +199,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/font1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="10"
+                    android:text="요리"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -215,7 +224,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="11"
+                    android:text="스포츠"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -225,7 +235,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="12"
+                    android:text="악기"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -248,7 +259,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="13"
+                    android:text="캠핑"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -258,7 +270,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="14"
+                    android:text="음식"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -280,7 +293,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="15"
+                    android:text="여행"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -290,7 +304,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/icon_press"
                     android:gravity="center"
-                    android:text="16"
+                    android:text="옷"
+                    android:fontFamily="@font/font1"
                     android:textSize="20sp" />
 
             </LinearLayout>

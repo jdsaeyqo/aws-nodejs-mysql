@@ -10,7 +10,11 @@
         android:id="@+id/textUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:fontFamily="@font/font1"
+        android:gravity="center"
         android:text="나와 관심사가 같은 사람"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

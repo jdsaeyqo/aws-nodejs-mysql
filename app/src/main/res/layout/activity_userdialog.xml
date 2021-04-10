@@ -3,100 +3,117 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools = "http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
     android:layout_marginHorizontal="50dp"
     android:layout_marginVertical="100dp"
-    tools:context=".controller.UserDialogActivity"
-    >
+    android:background="#FFFFFF"
+    tools:context=".controller.UserDialogActivity">
 
     <ImageView
         android:id="@+id/userProfileImageView"
-        android:layout_marginTop="50dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:text="닉네임"
-        android:textSize="20sp"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@id/userNciknameTextView"
-        app:layout_constraintLeft_toLeftOf="@id/userNciknameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <TextView
-        android:layout_margin="30dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/font1"
+        android:text="닉네임"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/userNciknameTextView"
+        app:layout_constraintLeft_toLeftOf="@id/userNciknameTextView" />
+
+    <TextView
         android:id="@+id/userNciknameTextView"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:fontFamily="@font/font1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/userProfileImageView" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:fontFamily="@font/font1"
         android:text="직업"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="@id/userJobTextView"
         app:layout_constraintBottom_toTopOf="@id/userJobTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintLeft_toLeftOf="@id/userJobTextView" />
 
     <TextView
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:textColor="@color/black"
         android:id="@+id/userJobTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="30dp"
+        android:fontFamily="@font/font1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/userNciknameTextView" />
+
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/textint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/font1"
         android:text="관심사"
         android:textSize="20sp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@id/userJobTextView"
         app:layout_constraintLeft_toLeftOf="@id/userInterestLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toBottomOf="@id/userJobTextView" />
 
     <LinearLayout
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="5dp"
         android:id="@+id/userInterestLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/textint"
-        >
+        app:layout_constraintTop_toBottomOf="@id/textint">
 
         <TextView
-
-            android:gravity="center"
+            android:textColor="@color/black"
             android:id="@+id/userInterest1TextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:fontFamily="@font/font1"
+            android:gravity="center" />
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/userInterest2TextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:fontFamily="@font/font1"
+            android:gravity="center" />
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/userInterest3TextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:fontFamily="@font/font1"
+            android:gravity="center" />
 
     </LinearLayout>
 
@@ -105,7 +122,7 @@
         android:layout_width="40dp"
 
         android:layout_height="40dp"
-        android:background="@color/purple_200"
+        android:background="@color/white"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_favorite_off"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -114,17 +131,16 @@
         app:layout_constraintTop_toBottomOf="@id/userInterestLayout" />
 
     <Button
-        android:background="@color/purple_200"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#636161"
         android:text="닫기"
         android:textSize="20sp"
-        android:id="@+id/btnClose"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/btnLike"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userInterestLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintTop_toBottomOf="@id/userInterestLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

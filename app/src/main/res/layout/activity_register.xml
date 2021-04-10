@@ -10,6 +10,7 @@
         android:id="@+id/title_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/font1"
         android:gravity="center"
         android:text="회원가입"
         android:textSize="50dp"
@@ -53,10 +54,10 @@
 
 
     <Button
-        android:text="회원가입"
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="회원가입"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -64,10 +65,10 @@
         app:layout_constraintTop_toBottomOf="@id/editPass" />
 
     <Button
-        android:text="로그인 창"
         android:id="@+id/btnToLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="로그인 창"
         app:layout_constraintBottom_toBottomOf="@id/btnRegister"
         app:layout_constraintLeft_toRightOf="@id/btnRegister"
         app:layout_constraintRight_toRightOf="parent" />
