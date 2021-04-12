@@ -50,7 +50,6 @@ class LikeMeDialogActivity : AppCompatActivity() {
         tsDoc.get().addOnSuccessListener { doc ->
             if(doc != null){
 
-
                 val userMap : HashMap<String,Boolean> = doc.data?.get("likeMe") as HashMap<String, Boolean>
 
                     for(key in userMap.keys){

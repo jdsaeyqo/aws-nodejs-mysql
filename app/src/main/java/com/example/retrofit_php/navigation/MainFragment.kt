@@ -1,6 +1,7 @@
 package com.example.retrofit_php.navigation
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : Fragment() {
+
 
     var fragmentView: View? = null
     private lateinit var userData: DataModel.UserData

@@ -2,13 +2,16 @@ package com.example.retrofit_php.navigation
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -33,8 +36,15 @@ import java.util.*
 class UserFragment : Fragment() {
 
     var fragmentView: View? = null
+    lateinit var preferences : SharedPreferences
 
     lateinit var email: String
+    lateinit var nickname: TextView
+    lateinit var age: TextView
+    lateinit var job: TextView
+    lateinit var interest1: TextView
+    lateinit var interest2: TextView
+    lateinit var interest3: TextView
     private lateinit var userData: DataModel.UserData
     private lateinit var getuserinfoapi: InterfaceModel.GetUserInfoInterface
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -51,9 +61,11 @@ class UserFragment : Fragment() {
 
         fragmentView =
             LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
-
+        preferences=context!!.getSharedPreferences("myNickName", Context.MODE_PRIVATE)
         userData = arguments?.getParcelable("userdata")!!
         email = userData.email.toString()
+
+        initView()
 
 
         fragmentView?.userProfileImage?.setOnClickListener {
@@ -65,15 +77,15 @@ class UserFragment : Fragment() {
 
         fragmentView?.I_like?.setOnClickListener {
 
-            val intent = Intent(activity,ILikeDialogActivity::class.java)
-            intent.putExtra("myemail",email)
+            val intent = Intent(activity, ILikeDialogActivity::class.java)
+            intent.putExtra("myemail", email)
             startActivity(intent)
 
         }
         fragmentView?.like_me?.setOnClickListener {
 
-            val intent = Intent(activity,LikeMeDialogActivity::class.java)
-            intent.putExtra("myemail",email)
+            val intent = Intent(activity, LikeMeDialogActivity::class.java)
+            intent.putExtra("myemail", email)
             startActivity(intent)
 
         }
@@ -145,6 +157,10 @@ class UserFragment : Fragment() {
                         jsonResponse.nickname, jsonResponse.age, jsonResponse.job,
                         jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
                     )
+
+                    val editor = preferences.edit()
+                    editor.putString("mynick",jsonResponse.nickname)
+                    editor.apply()
                     setUserData(userData)
 
                 }
@@ -163,23 +179,38 @@ class UserFragment : Fragment() {
     private fun setUserData(userData: DataModel.UserData) {
 
         if (userData.nickname != null) {
-            textNickname.text = "닉네임 : ${userData.nickname}"
+            nickname.text = "닉네임 : ${userData.nickname}"
         }
         if (userData.age != null) {
-            textAge.text = "나이 : ${userData.age}"
+            age.text = "나이 : ${userData.age}"
         }
         if (userData.job != null) {
-            textJob.text = "직업 : ${userData.job}"
+            job.text = "직업 : ${userData.job}"
         }
         if (userData.interest1 != "null") {
-            textInterest1.text = userData.interest1
+            interest1.text = userData.interest1
         }
         if (userData.interest2 != "null") {
-            textInterest2.text = userData.interest2
+            interest2.text = userData.interest2
         }
         if (userData.interest3 != "null") {
-            textInterest3.text = userData.interest3
+            interest3.text = userData.interest3
         }
+
+        val tsDoc = FirebaseFirestore.getInstance().collection("profileImages").document(email)
+
+        tsDoc.get().addOnSuccessListener { doc ->
+
+            val ilikeCount = doc.data?.get("ilikeCount").toString()
+            val likemeCount = doc.data?.get("likemeCount").toString()
+
+            I_like.text = ilikeCount
+            like_me.text = likemeCount
+
+        }
+            .addOnFailureListener {
+                Log.e("UserFragment", "에러 발생")
+            }
 
         progressBar.visibility = View.GONE
 
@@ -195,28 +226,38 @@ class UserFragment : Fragment() {
     private fun getProfileImage() {
 
 
-            email.let {
-                FirebaseFirestore.getInstance().collection("profileImages").document(
-                    it
-                ).addSnapshotListener { value,_ ->
-                    if (value == null) return@addSnapshotListener
+        email.let {
+            FirebaseFirestore.getInstance().collection("profileImages").document(
+                it
+            ).addSnapshotListener { value, _ ->
+                if (value == null) return@addSnapshotListener
 
-                    if (value.data != null) {
-                        val url = value.data!!["imageUri"] ?: return@addSnapshotListener
+                if (value.data != null) {
+                    val url = value.data!!["imageUri"] ?: return@addSnapshotListener
 
-                        fragmentView?.let { it1 ->
+                    fragmentView?.let { it1 ->
 
-                           if(activity != null){
-                               Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop())
-                                   .into(it1.userProfileImage)
-                           }
-
+                        if (activity != null) {
+                            Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop())
+                                .into(it1.userProfileImage)
                         }
 
-                    } else return@addSnapshotListener
-                }
-            }
+                    }
 
+                } else return@addSnapshotListener
+            }
+        }
+
+    }
+
+    private fun initView() {
+
+        nickname = fragmentView!!.findViewById(R.id.textNickname)
+        age = fragmentView!!.findViewById(R.id.textAge)
+        job = fragmentView!!.findViewById(R.id.textJob)
+        interest1 = fragmentView!!.findViewById(R.id.textInterest1)
+        interest2 = fragmentView!!.findViewById(R.id.textInterest2)
+        interest3 = fragmentView!!.findViewById(R.id.textInterest3)
     }
 
     override fun onStart() {

@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Retrofit_php"
         android:usesCleartextTraffic="true">
+        <activity android:name=".controller.ChatActivity"></activity>
         <activity
             android:name=".controller.ILikeDialogActivity"
             android:theme="@style/Transparent" />

@@ -12,5 +12,11 @@
         android:enabled="true"
         android:icon="@drawable/ic_person"
         android:title="프로필" />
+    <item
+        android:id="@+id/action_match"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="매칭"/>
+
 
 </menu>

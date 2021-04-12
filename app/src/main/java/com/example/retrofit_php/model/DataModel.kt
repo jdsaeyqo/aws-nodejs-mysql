@@ -61,6 +61,23 @@ class DataModel {
 
     }
 
+    data class ChatRoomData(
+        var chatRoomName : String? = null,
+        var otherEmail : String? = null,
+        var userNickname : String? = null,
+        var chatMessage : String? = "새로운 채팅방이 개설되었습니다"
+    ){
+
+    }
+
+    data class ChatData(
+        var nickname : String,
+        var message : String,
+        var date_time : String
+    ){
+
+    }
+
 
 
 }
