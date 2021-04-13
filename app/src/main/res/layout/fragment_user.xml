@@ -15,23 +15,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textColor="#B8AEAE"
                 android:text="아래로 밀어 새로고침"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="#B8AEAE"
+                app:layout_constraintBottom_toTopOf="@id/userProfileImage"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/userProfileImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <ImageView
@@ -62,25 +61,24 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:fontFamily="@font/font1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:fontFamily="@font/font1"
                         android:gravity="center"
                         android:text="I Like"
                         android:textSize="20sp"
                         tools:ignore="NestedWeights" />
 
                     <TextView
-                        android:fontFamily="@font/font1"
                         android:id="@+id/I_like"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:fontFamily="@font/font1"
                         android:gravity="center|top"
-                        android:textSize="20sp"
                         android:text="0"
-                        />
+                        android:textSize="20sp" />
 
 
                 </LinearLayout>
@@ -107,8 +105,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center|top"
-                        android:textSize="20sp"
-                        android:text="0" />
+                        android:text="0"
+                        android:textSize="20sp" />
 
 
                 </LinearLayout>
@@ -135,18 +133,17 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <TextView
-                    android:fontFamily="@font/font1"
                     android:id="@+id/textNickname"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="100dp"
                     android:layout_marginRight="20dp"
+                    android:fontFamily="@font/font1"
                     android:hint="닉네임"
                     android:text=""
                     android:textSize="20sp"
@@ -155,11 +152,11 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:fontFamily="@font/font1"
                     android:id="@+id/textAge"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="20dp"
+                    android:fontFamily="@font/font1"
                     android:hint="나이"
                     android:text=""
                     android:textSize="20sp"
@@ -169,11 +166,11 @@
 
 
                 <TextView
-                    android:fontFamily="@font/font1"
                     android:id="@+id/textJob"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="20dp"
+                    android:fontFamily="@font/font1"
                     android:hint="직업"
                     android:text=""
                     android:textSize="20sp"
@@ -182,18 +179,18 @@
                     app:layout_constraintTop_toBottomOf="@id/textAge" />
 
                 <TextView
-                    android:fontFamily="@font/font1"
-                    android:textSize="20dp"
                     android:id="@+id/myinterest"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="30dp"
-                    android:text="나의 관심사"
-                    app:layout_constraintTop_toBottomOf="@id/textJob"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/font1"
+                    android:text="나의 관심사"
+                    android:textSize="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textJob"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
                 <LinearLayout
 
@@ -201,41 +198,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_marginTop="50dp"
+                    android:layout_marginRight="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/myinterest">
 
                     <TextView
-                        android:fontFamily="@font/font1"
                         android:id="@+id/textInterest1"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:fontFamily="@font/font1"
                         android:gravity="center"
                         android:hint="관심사1"
                         android:text=""
                         android:textSize="20sp" />
 
                     <TextView
-                        android:fontFamily="@font/font1"
                         android:id="@+id/textInterest2"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:fontFamily="@font/font1"
                         android:gravity="center"
                         android:hint="관심사2"
                         android:text=""
                         android:textSize="20sp" />
 
                     <TextView
-                        android:fontFamily="@font/font1"
                         android:id="@+id/textInterest3"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:fontFamily="@font/font1"
                         android:gravity="center"
                         android:hint="관심사3"
                         android:text=""
@@ -250,9 +247,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="50dp"
+                    android:fontFamily="@font/font1"
                     android:text="프로필 정보 수정"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/userinterest" />
 

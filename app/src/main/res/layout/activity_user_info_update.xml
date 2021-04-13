@@ -6,12 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".controller.UserInfoUpdate">
 
-    <EditText
-        android:id="@+id/editNickname"
+    <TextView
+        android:id="@+id/TextNickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="닉네임"
+        android:fontFamily="@font/font1"
+        android:text="닉네임"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -23,16 +26,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:fontFamily="@font/font1"
         android:hint="나이"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editNickname" />
+        app:layout_constraintTop_toBottomOf="@id/TextNickname" />
 
     <EditText
         android:id="@+id/editJob"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:fontFamily="@font/font1"
         android:hint="직업"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -49,37 +54,40 @@
         app:layout_constraintTop_toBottomOf="@id/editJob">
 
         <TextView
-            android:gravity="center"
             android:id="@+id/editInterest1"
-            android:text="없음"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/text_interest_shpae" />
+            android:background="@drawable/text_interest_shpae"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
+            android:text="없음" />
 
         <TextView
-            android:gravity="center"
-            android:text="없음"
             android:id="@+id/editInterest2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/text_interest_shpae" />
+            android:background="@drawable/text_interest_shpae"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
+            android:text="없음" />
 
         <TextView
-            android:gravity="center"
-            android:text="없음"
             android:id="@+id/editInterest3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/text_interest_shpae" />
+            android:background="@drawable/text_interest_shpae"
+            android:fontFamily="@font/font1"
+            android:gravity="center"
+            android:text="없음" />
 
 
     </LinearLayout>
@@ -89,6 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:fontFamily="@font/font1"
         android:text="관심사 수정하기"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -100,6 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="25dp"
         android:layout_marginBottom="40dp"
+        android:fontFamily="@font/font1"
         android:text="수정 완료하기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        android:fontFamily="@font/font1"
         android:hint="이메일"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -19,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-
+        android:fontFamily="@font/font1"
         android:id="@+id/editLoginPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,6 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/editLoginEmail" />
 
     <Button
+        android:fontFamily="@font/font1"
         android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,6 +42,7 @@
         app:layout_constraintRight_toLeftOf="@id/btnToRegister" />
 
     <Button
+        android:fontFamily="@font/font1"
         android:id="@+id/btnToRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
