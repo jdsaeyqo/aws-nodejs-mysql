@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 class DataModel {
 
     data class RegisterData(
-        @SerializedName("name")
+        @SerializedName("nickname")
         val name : String,
         @SerializedName("email")
         val email : String,
@@ -17,6 +17,9 @@ class DataModel {
     ) {
 
     }
+    data class CheckNickData(
+        val nickname : String
+    )
 
     data class LoginData(
         @SerializedName("email")
@@ -29,7 +32,7 @@ class DataModel {
     @Parcelize
     data class UserData(
         var email: String?,
-        var nickname : String? = null,
+        var nickname: String? = null,
         var age : String? = null,
         var job : String? = null,
         var interest1: String? = null,

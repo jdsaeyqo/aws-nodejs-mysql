@@ -24,7 +24,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     lateinit var userData: DataModel.UserData
-    lateinit var userEmail : String
+    lateinit var myEmail : String
+    lateinit var myNickName : String
     lateinit var preferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        preferences = getSharedPreferences("myNickName", Context.MODE_PRIVATE)
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
         userDataUpdate()
         bottomNavigationBar.setOnNavigationItemSelectedListener(this)
         bottomNavigationBar.selectedItemId = R.id.action_main
@@ -41,10 +42,15 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     private fun userDataUpdate() {
 
-        userData = intent.getParcelableExtra("userdata")!!
-        userEmail=userData.email.toString()
+        myEmail = preferences.getString("myEmail","").toString()
+        myNickName =  preferences.getString("myNickName","").toString()
 
-            Log.d("MainActivityUserEmail",userData.email.toString())
+        Log.d("Main","myEmail : $myEmail , myNick : $myNickName")
+
+//        userData = intent.getParcelableExtra("userdata")!!
+//        userEmail=userData.email.toString()
+//
+//            Log.d("MainActivityUserEmail",userData.email.toString())
 
     }
 
@@ -55,9 +61,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.action_main -> {
                 val mainFragment = MainFragment()
 
-                val bundle = Bundle()
-                bundle.putParcelable("userdata",userData)
-                mainFragment.arguments = bundle
+//                val bundle = Bundle()
+//                bundle.putParcelable("userdata",userData)
+//                mainFragment.arguments = bundle
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame, mainFragment)
                     .commit()
                 return true
@@ -65,11 +71,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.action_account -> {
 
                 val userFragment = UserFragment()
-                val bundle = Bundle()
-
-                bundle.putParcelable("userdata", userData)
-                userFragment.arguments = bundle
-                Log.d("bundle", bundle.getString("useremail").toString())
+//                val bundle = Bundle()
+//
+//                bundle.putParcelable("userdata", userData)
+//                userFragment.arguments = bundle
+//                Log.d("bundle", bundle.getString("useremail").toString())
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame, userFragment)
                     .commit()
 
@@ -77,10 +83,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
             R.id.action_match -> {
                 val matchingFragment = MatchingFragment()
-                val bundle = Bundle()
-
-                bundle.putParcelable("userdata", userData)
-                matchingFragment.arguments = bundle
+//                val bundle = Bundle()
+//
+//                bundle.putParcelable("userdata", userData)
+//                matchingFragment.arguments = bundle
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame, matchingFragment)
                     .commit()
                 return true
@@ -104,7 +110,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
                 val storageRef =
-                    userEmail.let {
+                    myEmail.let {
                         FirebaseStorage.getInstance().reference.child("profileImages").child(
                             it
                         )
@@ -114,7 +120,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                         return@continueWithTask storageRef.downloadUrl
                     }.addOnSuccessListener {
 
-                        val tsDoc = FirebaseFirestore.getInstance().collection("profileImages").document(userEmail)
+                        val tsDoc = FirebaseFirestore.getInstance().collection("profileImages").document(myEmail)
                         tsDoc.update("imageUri",it.toString())
 
                     }

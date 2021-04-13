@@ -1,6 +1,8 @@
 package com.example.retrofit_php.controller
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +23,7 @@ class ILikeDialogActivity : AppCompatActivity() {
     lateinit var otherData: DataModel.OtherData
     lateinit var otherList : MutableList<DataModel.OtherData>
     private lateinit var  mAdapter : UserAdapter
+    lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +33,8 @@ class ILikeDialogActivity : AppCompatActivity() {
         mAdapter = UserAdapter(this,otherList){
             itemClick(it)
         }
-        myEmail = intent.getStringExtra("myemail").toString()
+
+        getRefer()
 
         recycler_ilike.adapter = mAdapter
         val lm = LinearLayoutManager(this)
@@ -39,6 +43,11 @@ class ILikeDialogActivity : AppCompatActivity() {
 
 
         getInfo()
+    }
+
+    private fun getRefer() {
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        myEmail = preferences.getString("myEmail","").toString()
     }
 
     private fun getInfo() {

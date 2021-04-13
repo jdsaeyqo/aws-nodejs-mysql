@@ -48,16 +48,21 @@ class ChatRoomAdapter(
                 }
 
                 if (value.data != null) {
+
+
                     val url = value.data!!["imageUri"]
 
-                    Glide.with(context).load(url).apply(RequestOptions().circleCrop())
-                        .into(holder.otherImage)
+                    if(url != null){
+                        Glide.with(context).load(url).apply(RequestOptions().circleCrop())
+                            .into(holder.otherImage)
+                    }else{
+                        holder.otherImage.setImageResource(R.drawable.ic_person)
+                        return@addSnapshotListener
+                    }
 
-
-                } else {
-                    holder.otherImage.setImageResource(R.drawable.ic_person)
-                    return@addSnapshotListener
                 }
+
+
             }
         }
 

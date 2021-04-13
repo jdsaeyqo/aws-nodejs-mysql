@@ -24,8 +24,8 @@ class ChatActivity : AppCompatActivity() {
     private val chatList: MutableList<DataModel.ChatData> = mutableListOf()
     lateinit var chatAdapter: ChatAdapter
     lateinit var myNick: String
-    lateinit var Message: String
-    lateinit var DateTime: String
+    lateinit var message: String
+    lateinit var dateTime: String
     lateinit var myEmail: String
     lateinit var otherEmail: String
     lateinit var otherNick: String
@@ -40,10 +40,9 @@ class ChatActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance()
 
-
+        getPrefer()
         getIntentData()
         makeRoomName()
-        getPrefer()
         openChat()
         initRecyclerView()
 
@@ -81,19 +80,16 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun getIntentData() {
-        myEmail = intent.getStringExtra("myEmail").toString()
-        myNick = intent.getStringExtra("myNick").toString()
         otherEmail = intent.getStringExtra("otherEmail").toString()
         otherNick = intent.getStringExtra("otherNick").toString()
         Log.d("otherNick",otherNick)
     }
 
     private fun getPrefer() {
-        preferences = getSharedPreferences("myNickName", Context.MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.putString("mynick", myNick)
-        editor.apply()
-        Log.d("preference", preferences.getString("myNick", "").toString())
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        myNick = preferences.getString("myNickName","").toString()
+        myEmail = preferences.getString("myEmail","").toString()
+
     }
 
     private fun openChat() {
@@ -126,10 +122,10 @@ class ChatActivity : AppCompatActivity() {
                     val dto = data.value as HashMap<String, String>
 
                     val nick = dto.getValue("nickname")
-                    Message = dto.getValue("message")
-                    DateTime = dto.getValue("date_time")
+                    message = dto.getValue("message")
+                    dateTime = dto.getValue("date_time")
 
-                    val chatdata = DataModel.ChatData(nick, Message, DateTime)
+                    val chatdata = DataModel.ChatData(nick, message, dateTime)
 
                     chatList.add(chatdata)
                     chatAdapter.notifyDataSetChanged()

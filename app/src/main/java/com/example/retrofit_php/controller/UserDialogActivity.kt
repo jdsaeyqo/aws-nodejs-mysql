@@ -1,6 +1,8 @@
 package com.example.retrofit_php.controller
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -24,16 +26,17 @@ class UserDialogActivity : AppCompatActivity() {
 
     lateinit var myEmail: String
     lateinit var otherEmail: String
-    lateinit var fireStore  :FirebaseFirestore
+    lateinit var fireStore: FirebaseFirestore
     lateinit var getuserinfoapi: InterfaceModel.GetUserInfoInterface
     lateinit var userData: DataModel.UserData
+    lateinit var preferences: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_userdialog)
 
-        myEmail = intent.getStringExtra("myemail").toString()
+        getPrefer()
         otherEmail = intent.getStringExtra("otheremail").toString()
         fireStore = FirebaseFirestore.getInstance()
 
@@ -49,6 +52,11 @@ class UserDialogActivity : AppCompatActivity() {
         }
     }
 
+    private fun getPrefer() {
+        preferences = getSharedPreferences("user",Context.MODE_PRIVATE)
+        myEmail = preferences.getString("myEmail","").toString()
+    }
+
     private fun favoriteEvent() {
 
         val tsOtherDoc = fireStore.collection("profileImages").document(otherEmail)
@@ -59,19 +67,19 @@ class UserDialogActivity : AppCompatActivity() {
             val favoriteOtherData = it.get(tsOtherDoc).toObject(DataModel.FavoriteData::class.java)
             val favoriteMyData = it.get(tsMyDoc).toObject(DataModel.FavoriteData::class.java)
 
-            if(favoriteMyData == null){
-                Toast.makeText(this,"프로필 사진을 등록 해 주세요",Toast.LENGTH_SHORT).show()
+            if (favoriteMyData == null) {
+                Toast.makeText(this, "프로필 사진을 등록 해 주세요", Toast.LENGTH_SHORT).show()
             }
 
-            if(favoriteOtherData == null){
-                Toast.makeText(this,"상대가 프로필 사진을 등록하지 안았습니다",Toast.LENGTH_SHORT).show()
+            if (favoriteOtherData == null) {
+                Toast.makeText(this, "상대가 프로필 사진을 등록하지 안았습니다", Toast.LENGTH_SHORT).show()
 
             }
 
             if (favoriteOtherData != null) {
 
                 //좋아요 버튼 안 눌렀을 떄
-                if(!favoriteOtherData.likeMe.contains(myEmail)){
+                if (!favoriteOtherData.likeMe.contains(myEmail)) {
                     favoriteOtherData.likeMe[myEmail] = true
                     favoriteOtherData.likemeCount++
 
@@ -82,8 +90,8 @@ class UserDialogActivity : AppCompatActivity() {
 
                     btnLike.setImageResource(R.drawable.ic_favorite_on)
 
-                //좋아요 버튼 이미 눌렀을 때
-                }else{
+                    //좋아요 버튼 이미 눌렀을 때
+                } else {
                     favoriteOtherData.likeMe.remove(myEmail)
                     favoriteOtherData.likemeCount--
 
@@ -95,8 +103,8 @@ class UserDialogActivity : AppCompatActivity() {
                     btnLike.setImageResource(R.drawable.ic_favorite_off)
 
                 }
-                it.set(tsOtherDoc,favoriteOtherData)
-                it.set(tsMyDoc,favoriteMyData!!)
+                it.set(tsOtherDoc, favoriteOtherData)
+                it.set(tsMyDoc, favoriteMyData!!)
 
             }
         }
@@ -114,7 +122,7 @@ class UserDialogActivity : AppCompatActivity() {
                 if (value.data != null) {
                     val url = value.data!!["imageUri"]
 
-                    if(this.isFinishing)return@addSnapshotListener
+                    if (this.isFinishing) return@addSnapshotListener
                     Glide.with(this).load(url).apply(RequestOptions().circleCrop())
                         .into(userProfileImageView)
 
@@ -142,8 +150,8 @@ class UserDialogActivity : AppCompatActivity() {
 
                     val jsonResponse = response.body()!!
                     userData = DataModel.UserData(
-                        otherEmail,
-                        jsonResponse.nickname, jsonResponse.age, jsonResponse.job,
+                        otherEmail,jsonResponse.nickname,
+                        jsonResponse.age, jsonResponse.job,
                         jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
                     )
 
@@ -166,17 +174,16 @@ class UserDialogActivity : AppCompatActivity() {
             val favoriteData = it.get(tsDoc).toObject(DataModel.FavoriteData::class.java)
 
             if (favoriteData != null) {
-                if(!favoriteData.likeMe.contains(myEmail)){
+                if (!favoriteData.likeMe.contains(myEmail)) {
                     btnLike.setImageResource(R.drawable.ic_favorite_off)
 
-                }else{
+                } else {
                     btnLike.setImageResource(R.drawable.ic_favorite_on)
                 }
-                it.set(tsDoc,favoriteData)
+                it.set(tsDoc, favoriteData)
 
             }
         }
-
 
 
     }

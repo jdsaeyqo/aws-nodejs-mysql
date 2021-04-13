@@ -18,9 +18,6 @@ class ResponseModel {
         @SerializedName("code")
         val code: Int,
 
-        @SerializedName("email")
-        val email: String,
-
         @SerializedName("message")
         val message: String,
 
@@ -32,6 +29,7 @@ class ResponseModel {
 
     data class GetUserDataResponse(
 
+        val email : String,
         @SerializedName("nickname")
         val nickname: String,
         @SerializedName("age")

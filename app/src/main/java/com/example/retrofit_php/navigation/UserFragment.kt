@@ -37,8 +37,9 @@ class UserFragment : Fragment() {
 
     var fragmentView: View? = null
     lateinit var preferences : SharedPreferences
+    private lateinit var myNick : String
+    lateinit var myEmail : String
 
-    lateinit var email: String
     lateinit var nickname: TextView
     lateinit var age: TextView
     lateinit var job: TextView
@@ -61,9 +62,13 @@ class UserFragment : Fragment() {
 
         fragmentView =
             LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
-        preferences=context!!.getSharedPreferences("myNickName", Context.MODE_PRIVATE)
-        userData = arguments?.getParcelable("userdata")!!
-        email = userData.email.toString()
+
+        getPreferences()
+
+
+        Log.d("UserFrag","Nick: ${preferences.getString("myNickName","")}")
+//        userData = arguments?.getParcelable("userdata")!!
+//        email = userData.email.toString()
 
         initView()
 
@@ -78,14 +83,14 @@ class UserFragment : Fragment() {
         fragmentView?.I_like?.setOnClickListener {
 
             val intent = Intent(activity, ILikeDialogActivity::class.java)
-            intent.putExtra("myemail", email)
+//            intent.putExtra("myemail", email)
             startActivity(intent)
 
         }
         fragmentView?.like_me?.setOnClickListener {
 
             val intent = Intent(activity, LikeMeDialogActivity::class.java)
-            intent.putExtra("myemail", email)
+//            intent.putExtra("myemail", email)
             startActivity(intent)
 
         }
@@ -106,15 +111,18 @@ class UserFragment : Fragment() {
         return fragmentView
     }
 
+    private fun getPreferences() {
+        preferences=context!!.getSharedPreferences("user", Context.MODE_PRIVATE)
+        myNick = preferences.getString("myNickName","").toString()
+        myEmail = preferences.getString("myEmail","").toString()
+    }
+
 
     private fun sendTextAndStartUpdateActivity() {
         val intent = Intent(activity, UserInfoUpdate::class.java)
 
-        intent.putExtra("email", userData.email)
+//        intent.putExtra("email", userData.email)
 
-        if (textNickname.text != "") {
-            intent.putExtra("nickname", userData.nickname)
-        }
         if (textAge.text != "") {
             intent.putExtra("age", userData.age)
         }
@@ -142,7 +150,7 @@ class UserFragment : Fragment() {
             getuserinfoapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
         }
 
-        val call: Call<ResponseModel.GetUserDataResponse> = getuserinfoapi.getUserData(email)
+        val call: Call<ResponseModel.GetUserDataResponse> = getuserinfoapi.getUserData(myEmail)
         call.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
             override fun onResponse(
                 call: Call<ResponseModel.GetUserDataResponse>,
@@ -153,14 +161,10 @@ class UserFragment : Fragment() {
 
                     val jsonResponse = response.body()!!
                     userData = DataModel.UserData(
-                        email,
-                        jsonResponse.nickname, jsonResponse.age, jsonResponse.job,
+                        myEmail,jsonResponse.nickname,jsonResponse.age, jsonResponse.job,
                         jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
                     )
 
-                    val editor = preferences.edit()
-                    editor.putString("mynick",jsonResponse.nickname)
-                    editor.apply()
                     setUserData(userData)
 
                 }
@@ -178,9 +182,8 @@ class UserFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setUserData(userData: DataModel.UserData) {
 
-        if (userData.nickname != null) {
-            nickname.text = "닉네임 : ${userData.nickname}"
-        }
+        nickname.text = myNick
+
         if (userData.age != null) {
             age.text = "나이 : ${userData.age}"
         }
@@ -197,7 +200,7 @@ class UserFragment : Fragment() {
             interest3.text = userData.interest3
         }
 
-        val tsDoc = FirebaseFirestore.getInstance().collection("profileImages").document(email)
+        val tsDoc = FirebaseFirestore.getInstance().collection("profileImages").document(myEmail)
 
         tsDoc.get().addOnSuccessListener { doc ->
 
@@ -226,7 +229,7 @@ class UserFragment : Fragment() {
     private fun getProfileImage() {
 
 
-        email.let {
+        myEmail.let {
             FirebaseFirestore.getInstance().collection("profileImages").document(
                 it
             ).addSnapshotListener { value, _ ->
@@ -261,11 +264,9 @@ class UserFragment : Fragment() {
     }
 
     override fun onStart() {
-        Log.d("userfragment", "onStart")
         getUserInfo()
         super.onStart()
     }
-
 
     override fun onResume() {
         Log.d("userfragment", "onResume")

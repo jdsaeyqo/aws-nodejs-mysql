@@ -42,17 +42,19 @@ class UserAdapter(private val context: Context, private val userList:MutableList
                 }
 
                 if (value.data != null) {
+
                     val url = value.data!!["imageUri"]
+                    if(url != null){
+                        Glide.with(context.applicationContext).load(url).apply(RequestOptions().circleCrop())
+                            .into(holder.userImage)
+                    }else{
+                        holder.userImage.setImageResource(R.drawable.ic_person)
+                    }
 
 
-                    Glide.with(context.applicationContext).load(url).apply(RequestOptions().circleCrop())
-                        .into(holder.userImage)
 
 
 
-                } else {
-                    holder.userImage.setImageResource(R.drawable.ic_person)
-                    return@addSnapshotListener
                 }
             }
         }

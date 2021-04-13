@@ -16,6 +16,13 @@ interface InterfaceModel {
 
     }
 
+    interface CheckNickInterface{
+        @POST("/user/checknick")
+        fun checkUserNick(
+            @Body nickname : DataModel.CheckNickData
+        ):Call<ResponseModel.RegisterResponse>
+    }
+
     interface LoginInterface {
 
         @POST("/user/login")

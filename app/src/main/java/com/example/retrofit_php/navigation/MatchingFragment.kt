@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ import retrofit2.Response
 class MatchingFragment : Fragment() {
 
     private var fragmentView : View? = null
+    lateinit var noMatchText : TextView
     lateinit var database : DatabaseReference
     private var iLikeList : MutableList<String> = mutableListOf()
     private var likeMeList : MutableList<String> = mutableListOf()
@@ -49,10 +51,12 @@ class MatchingFragment : Fragment() {
 
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_match,container,false)
 
-        preferences = context!!.getSharedPreferences("myNickName",Context.MODE_PRIVATE)
+        preferences = context!!.getSharedPreferences("user",Context.MODE_PRIVATE)
 
-        userData = arguments?.getParcelable("userdata")!!
-        myEmail = userData.email.toString()
+//        userData = arguments?.getParcelable("userdata")!!
+        myNick = preferences.getString("myNickName","").toString()
+        myEmail = preferences.getString("myEmail","").toString()
+        Log.e("MF",myEmail)
         database = FirebaseDatabase.getInstance().reference
 
 
@@ -67,6 +71,7 @@ class MatchingFragment : Fragment() {
         recycleMatch.setHasFixedSize(true)
         recycleMatch.adapter = chatAdapter
 
+
         return fragmentView
 
 
@@ -75,8 +80,8 @@ class MatchingFragment : Fragment() {
     private fun itemClick(chatData: DataModel.ChatRoomData) {
 
         val intent = Intent(activity, ChatActivity::class.java)
-        intent.putExtra("myEmail",myEmail)
-        intent.putExtra("myNick",myNick)
+//        intent.putExtra("myEmail",myEmail)
+//        intent.putExtra("myNick",myNick)
         intent.putExtra("otherEmail",chatData.otherEmail)
         intent.putExtra("otherNick",chatData.userNickname)
         startActivity(intent)
@@ -84,6 +89,7 @@ class MatchingFragment : Fragment() {
     }
 
     private fun getLikeInfo() {
+        Log.e("MF",myEmail)
         val tsDoc = FirebaseFirestore.getInstance().collection("profileImages").document(myEmail)
 
         tsDoc.get().addOnSuccessListener { doc ->
@@ -122,41 +128,40 @@ class MatchingFragment : Fragment() {
                 }
             }
         }
-        getNickname()
+        getOtherNickname()
 
     }
 
-    private fun getNickname() {
+    private fun getOtherNickname() {
+
+
+//
+//        val mycall: Call<ResponseModel.GetUserDataResponse> = getuserapi.getUserData(myEmail)
+//        mycall.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
+//            override fun onResponse(
+//                call: Call<ResponseModel.GetUserDataResponse>,
+//                response: Response<ResponseModel.GetUserDataResponse>
+//            ) {
+//                if (response.isSuccessful && response.body() != null) {
+//                    Log.e("onSuccess1", response.body()!!.toString())
+//
+//                    val info = response.body()!!
+//                    myNick=info.nickname
+//
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ResponseModel.GetUserDataResponse>, t: Throwable) {
+//
+//            }
+//
+//        })
 
         val retrofit = Repository.getApiClient()
         if(retrofit!=null){
             getuserapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
 
-
         }
-
-        val mycall: Call<ResponseModel.GetUserDataResponse> = getuserapi.getUserData(myEmail)
-        mycall.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
-            override fun onResponse(
-                call: Call<ResponseModel.GetUserDataResponse>,
-                response: Response<ResponseModel.GetUserDataResponse>
-            ) {
-                if (response.isSuccessful && response.body() != null) {
-                    Log.e("onSuccess1", response.body()!!.toString())
-
-                    val info = response.body()!!
-                    myNick=info.nickname
-
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseModel.GetUserDataResponse>, t: Throwable) {
-
-            }
-
-        })
-
-
         matchList.forEach { otheremail ->
             val othercall: Call<ResponseModel.GetUserDataResponse> = getuserapi.getUserData(otheremail)
             othercall.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {

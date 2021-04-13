@@ -50,13 +50,14 @@ class ChatAdapter(val context: Context, private var chatList : MutableList<DataM
                     if (value.data != null) {
                         val url = value.data!!["imageUri"]
 
-                        Glide.with(context).load(url).apply(RequestOptions().circleCrop())
-                            .into(holder.otherProfileImage)
+                        if(url != null){
+                            Glide.with(context).load(url).apply(RequestOptions().circleCrop())
+                                .into(holder.otherProfileImage)
+                        }else{
+                            holder.otherProfileImage.setImageResource(R.drawable.ic_person)
+                            return@addSnapshotListener
+                        }
 
-
-                    } else {
-                        holder.otherProfileImage.setImageResource(R.drawable.ic_person)
-                        return@addSnapshotListener
                     }
                 }
             }
@@ -72,9 +73,9 @@ class ChatAdapter(val context: Context, private var chatList : MutableList<DataM
     }
 
     override fun getItemViewType(position: Int): Int {
-        preferences = context.getSharedPreferences("myNickName",Context.MODE_PRIVATE)
+        preferences = context.getSharedPreferences("user",Context.MODE_PRIVATE)
 
-        return if(chatList[position].nickname == preferences.getString("mynick","")){
+        return if(chatList[position].nickname == preferences.getString("myNickName","")){
             1
         }else{
             2

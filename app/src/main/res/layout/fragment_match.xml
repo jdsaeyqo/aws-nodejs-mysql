@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/font1"
         android:gravity="center"
-        android:text="매칭 된 상대가 없습니다"
+        android:text="나와 매칭된 상대"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintBottom_toTopOf="@id/recycler_match"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

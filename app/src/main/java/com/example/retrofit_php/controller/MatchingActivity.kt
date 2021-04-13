@@ -1,6 +1,8 @@
 package com.example.retrofit_php.controller
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +17,7 @@ import retrofit2.Response
 
 class MatchingActivity : AppCompatActivity() {
 
-    private var myEmail: String? = null
+    lateinit var myEmail : String
     private var otherDataList: MutableList<DataModel.OtherData> = mutableListOf()
 
     private val uAdapter = UserAdapter(this, otherDataList) {
@@ -23,6 +25,7 @@ class MatchingActivity : AppCompatActivity() {
     }
     lateinit var getuserapi: InterfaceModel.GetUserInfoInterface
     lateinit var getmatchapi: InterfaceModel.GetUserInfoInterface
+    lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +36,14 @@ class MatchingActivity : AppCompatActivity() {
         userRecyclerView.layoutManager = lm
         userRecyclerView.setHasFixedSize(true)
 
+        getPrefer()
         getInfo()
+
+    }
+
+    private fun getPrefer() {
+        preferences = getSharedPreferences("user",Context.MODE_PRIVATE)
+        myEmail = preferences.getString("myEmail","").toString()
 
     }
 
@@ -48,16 +58,15 @@ class MatchingActivity : AppCompatActivity() {
 
     private fun getInfo() {
 
-        myEmail = intent.getStringExtra("useremail")
 
         val retrofit = Repository.getApiClient()
 
         if (retrofit != null) {
             getuserapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
         }
-        val call: Call<ResponseModel.GetUserDataResponse>? = myEmail?.let { getuserapi.getUserData(it) }
+        val call: Call<ResponseModel.GetUserDataResponse> = myEmail.let { getuserapi.getUserData(it) }
 
-        call?.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
+        call.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
             override fun onResponse(
                 call: Call<ResponseModel.GetUserDataResponse>,
                 response: Response<ResponseModel.GetUserDataResponse>

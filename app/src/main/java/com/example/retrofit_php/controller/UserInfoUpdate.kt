@@ -1,6 +1,8 @@
 package com.example.retrofit_php.controller
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -19,6 +21,9 @@ class UserInfoUpdate : AppCompatActivity() {
 
     lateinit var userEmail : String
     lateinit var userdata : DataModel.UserData
+    private lateinit var preferences: SharedPreferences
+    lateinit var myNick: String
+    lateinit var myEmail: String
 
     lateinit var interestTextArray : Array<TextView>
 
@@ -26,6 +31,9 @@ class UserInfoUpdate : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info_update)
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        myNick = preferences.getString("myNickName","").toString()
+        myEmail = preferences.getString("myEmail","").toString()
 
         setText()
 
@@ -41,10 +49,9 @@ class UserInfoUpdate : AppCompatActivity() {
     }
 
     private fun setText() {
-      if(intent.getStringExtra("nickname") != null){
-          editNickname.setText(intent.getStringExtra("nickname"))
 
-      }
+        TextNickname.text = myNick
+
        if(intent.getStringExtra("age") != null){
           editAge.setText(intent.getStringExtra("age"))
 
@@ -76,16 +83,15 @@ class UserInfoUpdate : AppCompatActivity() {
     }
 
     private fun updateUserInfo() {
-
-        userEmail = intent.getStringExtra("email").toString()
-        val nickname = editNickname.text.toString()
+        val email = myEmail
+        val nickname = myNick
         val age = editAge.text.toString()
         val job = editJob.text.toString()
         val interest1 = editInterest1.text.toString()
         val interest2 = editInterest2.text.toString()
         val interest3 = editInterest3.text.toString()
 
-        userdata = DataModel.UserData(userEmail,nickname, age, job, interest1, interest2, interest3)
+        userdata = DataModel.UserData(email,nickname,age, job, interest1, interest2, interest3)
 
         val retrofit = Repository.getApiClient()
 
