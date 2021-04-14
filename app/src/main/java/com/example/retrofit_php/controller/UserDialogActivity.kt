@@ -53,8 +53,8 @@ class UserDialogActivity : AppCompatActivity() {
     }
 
     private fun getPrefer() {
-        preferences = getSharedPreferences("user",Context.MODE_PRIVATE)
-        myEmail = preferences.getString("myEmail","").toString()
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        myEmail = preferences.getString("myEmail", "").toString()
     }
 
     private fun favoriteEvent() {
@@ -150,7 +150,7 @@ class UserDialogActivity : AppCompatActivity() {
 
                     val jsonResponse = response.body()!!
                     userData = DataModel.UserData(
-                        otherEmail,jsonResponse.nickname,
+                        otherEmail, jsonResponse.nickname,
                         jsonResponse.age, jsonResponse.job,
                         jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
                     )
@@ -184,7 +184,6 @@ class UserDialogActivity : AppCompatActivity() {
 
             }
         }
-
 
     }
 

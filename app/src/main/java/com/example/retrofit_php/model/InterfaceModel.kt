@@ -11,24 +11,24 @@ interface InterfaceModel {
     interface RegisterInterface {
         @POST("/user/join")
         fun getUserRegist(
-            @Body data : DataModel.RegisterData
+            @Body data: DataModel.RegisterData
         ): Call<ResponseModel.RegisterResponse>
 
     }
 
-    interface CheckNickInterface{
+    interface CheckNickInterface {
         @POST("/user/checknick")
         fun checkUserNick(
-            @Body nickname : DataModel.CheckNickData
-        ):Call<ResponseModel.RegisterResponse>
+            @Body nickname: DataModel.CheckNickData
+        ): Call<ResponseModel.RegisterResponse>
     }
 
     interface LoginInterface {
 
         @POST("/user/login")
         fun getUserLogin(
-            @Body data : DataModel.LoginData
-        ):Call<ResponseModel.LoginResponse>
+            @Body data: DataModel.LoginData
+        ): Call<ResponseModel.LoginResponse>
 
     }
 
@@ -36,15 +36,15 @@ interface InterfaceModel {
 
         @GET("/user/getuserdata")
         fun getUserData(
-            @Query("email") email : String
-        ):Call<ResponseModel.GetUserDataResponse>
+            @Query("email") email: String
+        ): Call<ResponseModel.GetUserDataResponse>
 
 
         @GET("/user/getmatchuser")
         fun getMatchingUser(
-            @Query("interest1") interest1 : String,
-            @Query("interest2") interest2 : String,
-            @Query("interest3") interest3 : String
+            @Query("interest1") interest1: String,
+            @Query("interest2") interest2: String,
+            @Query("interest3") interest3: String
 
 
         ): Call<ResponseModel.GetOtherDataResponse>
@@ -54,7 +54,7 @@ interface InterfaceModel {
 
         @POST("/user/updateuserinfo")
         fun updateUserInfo(
-            @Body userinfo : DataModel.UserData
+            @Body userinfo: DataModel.UserData
 
         ): Call<ResponseModel.UpdataUserdataResponse>
     }

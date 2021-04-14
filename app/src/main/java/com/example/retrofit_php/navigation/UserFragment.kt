@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -36,9 +35,9 @@ import java.util.*
 class UserFragment : Fragment() {
 
     var fragmentView: View? = null
-    lateinit var preferences : SharedPreferences
-    private lateinit var myNick : String
-    lateinit var myEmail : String
+    lateinit var preferences: SharedPreferences
+    private lateinit var myNick: String
+    lateinit var myEmail: String
 
     lateinit var nickname: TextView
     lateinit var age: TextView
@@ -64,12 +63,6 @@ class UserFragment : Fragment() {
             LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
 
         getPreferences()
-
-
-        Log.d("UserFrag","Nick: ${preferences.getString("myNickName","")}")
-//        userData = arguments?.getParcelable("userdata")!!
-//        email = userData.email.toString()
-
         initView()
 
 
@@ -83,14 +76,12 @@ class UserFragment : Fragment() {
         fragmentView?.I_like?.setOnClickListener {
 
             val intent = Intent(activity, ILikeDialogActivity::class.java)
-//            intent.putExtra("myemail", email)
             startActivity(intent)
 
         }
         fragmentView?.like_me?.setOnClickListener {
 
             val intent = Intent(activity, LikeMeDialogActivity::class.java)
-//            intent.putExtra("myemail", email)
             startActivity(intent)
 
         }
@@ -112,16 +103,15 @@ class UserFragment : Fragment() {
     }
 
     private fun getPreferences() {
-        preferences=context!!.getSharedPreferences("user", Context.MODE_PRIVATE)
-        myNick = preferences.getString("myNickName","").toString()
-        myEmail = preferences.getString("myEmail","").toString()
+        preferences = context!!.getSharedPreferences("user", Context.MODE_PRIVATE)
+        myNick = preferences.getString("myNickName", "").toString()
+        myEmail = preferences.getString("myEmail", "").toString()
     }
 
 
     private fun sendTextAndStartUpdateActivity() {
-        val intent = Intent(activity, UserInfoUpdate::class.java)
 
-//        intent.putExtra("email", userData.email)
+        val intent = Intent(activity, UserInfoUpdate::class.java)
 
         if (textAge.text != "") {
             intent.putExtra("age", userData.age)
@@ -161,7 +151,7 @@ class UserFragment : Fragment() {
 
                     val jsonResponse = response.body()!!
                     userData = DataModel.UserData(
-                        myEmail,jsonResponse.nickname,jsonResponse.age, jsonResponse.job,
+                        myEmail, jsonResponse.nickname, jsonResponse.age, jsonResponse.job,
                         jsonResponse.interest1, jsonResponse.interest2, jsonResponse.interest3
                     )
 

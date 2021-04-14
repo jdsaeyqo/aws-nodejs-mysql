@@ -1,6 +1,5 @@
 package com.example.retrofit_php.controller
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -20,10 +19,9 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var userData: DataModel.UserData
     lateinit var loginapi: InterfaceModel.LoginInterface
-    lateinit var preferences : SharedPreferences
-    lateinit var getuserapi : InterfaceModel.GetUserInfoInterface
+    lateinit var preferences: SharedPreferences
+    lateinit var getuserapi: InterfaceModel.GetUserInfoInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,12 +78,7 @@ class LoginActivity : AppCompatActivity() {
 
                     getMyNickName(email)
 
-//                    userData = DataModel.UserData(useremail)
-
-
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//                    intent.putExtra("userdata", userData)
-
                     startActivity(intent)
                 }
             }
@@ -98,9 +91,9 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun getMyNickName(myEmail: String)  {
+    private fun getMyNickName(myEmail: String) {
         val retrofit = Repository.getApiClient()
-        if(retrofit!=null){
+        if (retrofit != null) {
             getuserapi = retrofit.create(InterfaceModel.GetUserInfoInterface::class.java)
 
 
@@ -120,9 +113,9 @@ class LoginActivity : AppCompatActivity() {
                     val nickname = info.nickname
 
                     val editor = preferences.edit()
-                    editor.putString("myNickName",nickname)
+                    editor.putString("myNickName", nickname)
                     editor.apply()
-                    Log.e("LogIn",preferences.getString("myNickName","").toString())
+                    Log.e("LogIn", preferences.getString("myNickName", "").toString())
 
 
                 }
@@ -133,9 +126,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
         })
-
-
-
 
 
     }

@@ -17,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ChatRoomAdapter(
     val context: Context,
     private var chatList: MutableList<DataModel.ChatRoomData>,
-    val chatRoomName : String,
     val itemClick: (DataModel.ChatRoomData) -> Unit
 
 ) : RecyclerView.Adapter<ChatRoomAdapter.ChatViewHolder>() {

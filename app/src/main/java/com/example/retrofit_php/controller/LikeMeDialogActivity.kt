@@ -3,11 +3,10 @@ package com.example.retrofit_php.controller
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.retrofit_php.R
 import com.example.retrofit_php.model.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,11 +17,11 @@ import retrofit2.Response
 
 class LikeMeDialogActivity : AppCompatActivity() {
 
-    lateinit var myEmail : String
-    private lateinit var getuserinfoapi : InterfaceModel.GetUserInfoInterface
+    lateinit var myEmail: String
+    private lateinit var getuserinfoapi: InterfaceModel.GetUserInfoInterface
     lateinit var otherData: DataModel.OtherData
-    lateinit var otherList : MutableList<DataModel.OtherData>
-    private lateinit var  mAdapter : UserAdapter
+    lateinit var otherList: MutableList<DataModel.OtherData>
+    private lateinit var mAdapter: UserAdapter
     lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +29,7 @@ class LikeMeDialogActivity : AppCompatActivity() {
         setContentView(R.layout.activity_like_me_dialog)
 
         otherList = mutableListOf()
-        mAdapter = UserAdapter(this,otherList){
+        mAdapter = UserAdapter(this, otherList) {
             itemClick(it)
         }
 
@@ -47,8 +46,8 @@ class LikeMeDialogActivity : AppCompatActivity() {
     }
 
     private fun getPrefer() {
-        preferences = getSharedPreferences("user",Context.MODE_PRIVATE)
-        myEmail = preferences.getString("myEmail","").toString()
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        myEmail = preferences.getString("myEmail", "").toString()
     }
 
     private fun getInfo() {
@@ -57,22 +56,23 @@ class LikeMeDialogActivity : AppCompatActivity() {
 
 
         tsDoc.get().addOnSuccessListener { doc ->
-            if(doc != null){
+            if (doc != null) {
 
-                val userMap : HashMap<String,Boolean> = doc.data?.get("likeMe") as HashMap<String, Boolean>
+                val userMap: HashMap<String, Boolean> =
+                    doc.data?.get("likeMe") as HashMap<String, Boolean>
 
-                    for(key in userMap.keys){
-                        getOtherInfo(key)
-                    }
+                for (key in userMap.keys) {
+                    getOtherInfo(key)
+                }
 
-                Log.e("list",otherList.toString())
+                Log.e("list", otherList.toString())
 
-            }else{
-                Log.d("likeme","No Document")
+            } else {
+                Log.d("likeme", "No Document")
             }
 
         }.addOnFailureListener {
-            Log.d("likeme","get Failed with",it)
+            Log.d("likeme", "get Failed with", it)
         }
 
 
@@ -100,10 +100,10 @@ class LikeMeDialogActivity : AppCompatActivity() {
                     otherData = DataModel.OtherData(
                         email, result.nickname
                     )
-                    Log.e("data",otherData.toString())
+                    Log.e("data", otherData.toString())
                     otherList.add(otherData)
                     mAdapter.notifyDataSetChanged()
-                    Log.e("otherList",otherList.toString())
+                    Log.e("otherList", otherList.toString())
                 }
             }
 
@@ -118,7 +118,7 @@ class LikeMeDialogActivity : AppCompatActivity() {
 
     private fun itemClick(otherData: DataModel.OtherData) {
         val intent = Intent(this, UserDialogActivity::class.java)
-        intent.putExtra("myemail",myEmail)
+        intent.putExtra("myemail", myEmail)
         intent.putExtra("otheremail", otherData.email)
         startActivity(intent)
 

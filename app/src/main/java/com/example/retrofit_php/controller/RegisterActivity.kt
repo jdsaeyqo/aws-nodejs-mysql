@@ -1,7 +1,6 @@
 package com.example.retrofit_php.controller
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import com.example.retrofit_php.R
 import com.example.retrofit_php.model.DataModel
 import com.example.retrofit_php.model.InterfaceModel
@@ -209,8 +207,7 @@ class RegisterActivity : AppCompatActivity() {
                     FirebaseFirestore.getInstance().collection("profileImages").document(myEmail)
                         .set(dto)
 
-
-
+                    
                     Log.e("onSuccess", response.body()!!.message)
                     Toast.makeText(
                         this@RegisterActivity,

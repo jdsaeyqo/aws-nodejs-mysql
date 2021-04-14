@@ -13,18 +13,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.retrofit_php.R
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ChatAdapter(val context: Context, private var chatList : MutableList<DataModel.ChatData>,
-    private val otherEmail:String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(
+    val context: Context, private var chatList: MutableList<DataModel.ChatData>,
+    private val otherEmail: String
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var preferences: SharedPreferences
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return if(viewType == 1){
-            val view : View = LayoutInflater.from(context).inflate(R.layout.item_mychat,parent,false)
+        return if (viewType == 1) {
+            val view: View =
+                LayoutInflater.from(context).inflate(R.layout.item_mychat, parent, false)
             MyChatViewHolder(view)
-        }else{
-            val view : View = LayoutInflater.from(context).inflate(R.layout.item_otherchat,parent,false)
+        } else {
+            val view: View =
+                LayoutInflater.from(context).inflate(R.layout.item_otherchat, parent, false)
             OtherChatViewHolder(view)
         }
 
@@ -32,12 +36,11 @@ class ChatAdapter(val context: Context, private var chatList : MutableList<DataM
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if(holder is MyChatViewHolder){
+        if (holder is MyChatViewHolder) {
 
             holder.mychatMessage.text = chatList[position].message
             holder.mychatTime.text = chatList[position].date_time
-        }
-        else if(holder is OtherChatViewHolder){
+        } else if (holder is OtherChatViewHolder) {
             otherEmail.let {
                 FirebaseFirestore.getInstance().collection("profileImages").document(
                     it
@@ -50,10 +53,10 @@ class ChatAdapter(val context: Context, private var chatList : MutableList<DataM
                     if (value.data != null) {
                         val url = value.data!!["imageUri"]
 
-                        if(url != null){
+                        if (url != null) {
                             Glide.with(context).load(url).apply(RequestOptions().circleCrop())
                                 .into(holder.otherProfileImage)
-                        }else{
+                        } else {
                             holder.otherProfileImage.setImageResource(R.drawable.ic_person)
                             return@addSnapshotListener
                         }
@@ -73,27 +76,27 @@ class ChatAdapter(val context: Context, private var chatList : MutableList<DataM
     }
 
     override fun getItemViewType(position: Int): Int {
-        preferences = context.getSharedPreferences("user",Context.MODE_PRIVATE)
+        preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
 
-        return if(chatList[position].nickname == preferences.getString("myNickName","")){
+        return if (chatList[position].nickname == preferences.getString("myNickName", "")) {
             1
-        }else{
+        } else {
             2
         }
 
 
     }
 
-    inner class MyChatViewHolder(itemview : View) : RecyclerView.ViewHolder(itemview) {
-        val mychatMessage:TextView = itemview.findViewById(R.id.myMessageTextView)
-        val mychatTime :TextView = itemview.findViewById(R.id.mychattime)
+    inner class MyChatViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
+        val mychatMessage: TextView = itemview.findViewById(R.id.myMessageTextView)
+        val mychatTime: TextView = itemview.findViewById(R.id.mychattime)
     }
 
-    inner class OtherChatViewHolder(itemview : View) : RecyclerView.ViewHolder(itemview) {
+    inner class OtherChatViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
 
-        val otherProfileImage : ImageView = itemview.findViewById(R.id.otherImage)
-        val otherMessage : TextView = itemview.findViewById(R.id.otherChatMessageTextView)
-        val otherChatTime : TextView = itemview.findViewById(R.id.otherchattime)
+        val otherProfileImage: ImageView = itemview.findViewById(R.id.otherImage)
+        val otherMessage: TextView = itemview.findViewById(R.id.otherChatMessageTextView)
+        val otherChatTime: TextView = itemview.findViewById(R.id.otherchattime)
 
     }
 }

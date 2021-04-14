@@ -53,7 +53,6 @@ class MatchingFragment : Fragment() {
 
         preferences = context!!.getSharedPreferences("user",Context.MODE_PRIVATE)
 
-//        userData = arguments?.getParcelable("userdata")!!
         myNick = preferences.getString("myNickName","").toString()
         myEmail = preferences.getString("myEmail","").toString()
         Log.e("MF",myEmail)
@@ -63,7 +62,7 @@ class MatchingFragment : Fragment() {
         getLikeInfo()
 
 
-        chatAdapter = ChatRoomAdapter(context!!,chatroomList,chatRoomName){
+        chatAdapter = ChatRoomAdapter(context!!,chatroomList){
             itemClick(it)
         }
         val recycleMatch : RecyclerView= fragmentView!!.findViewById(R.id.recycler_match)
@@ -80,8 +79,6 @@ class MatchingFragment : Fragment() {
     private fun itemClick(chatData: DataModel.ChatRoomData) {
 
         val intent = Intent(activity, ChatActivity::class.java)
-//        intent.putExtra("myEmail",myEmail)
-//        intent.putExtra("myNick",myNick)
         intent.putExtra("otherEmail",chatData.otherEmail)
         intent.putExtra("otherNick",chatData.userNickname)
         startActivity(intent)
@@ -133,29 +130,6 @@ class MatchingFragment : Fragment() {
     }
 
     private fun getOtherNickname() {
-
-
-//
-//        val mycall: Call<ResponseModel.GetUserDataResponse> = getuserapi.getUserData(myEmail)
-//        mycall.enqueue(object : Callback<ResponseModel.GetUserDataResponse> {
-//            override fun onResponse(
-//                call: Call<ResponseModel.GetUserDataResponse>,
-//                response: Response<ResponseModel.GetUserDataResponse>
-//            ) {
-//                if (response.isSuccessful && response.body() != null) {
-//                    Log.e("onSuccess1", response.body()!!.toString())
-//
-//                    val info = response.body()!!
-//                    myNick=info.nickname
-//
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ResponseModel.GetUserDataResponse>, t: Throwable) {
-//
-//            }
-//
-//        })
 
         val retrofit = Repository.getApiClient()
         if(retrofit!=null){

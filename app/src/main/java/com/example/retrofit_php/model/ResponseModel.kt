@@ -22,18 +22,18 @@ class ResponseModel {
         val message: String,
 
         @SerializedName("id")
-        val id : Int
+        val id: Int
 
     ) {
     }
 
     data class GetUserDataResponse(
 
-        val email : String,
+        val email: String,
         @SerializedName("nickname")
         val nickname: String,
         @SerializedName("age")
-        val age :String,
+        val age: String,
         @SerializedName("job")
         val job: String,
         @SerializedName("interest1")
@@ -45,9 +45,10 @@ class ResponseModel {
 
     ) {
     }
+
     data class GetOtherDataResponse(
         @SerializedName("result")
-        val result : List<DataModel.OtherData>
+        val result: List<DataModel.OtherData>
     ) {
     }
 

@@ -3,13 +3,10 @@ package com.example.retrofit_php.controller
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofit_php.R
 import com.example.retrofit_php.model.ChatAdapter
 import com.example.retrofit_php.model.DataModel
@@ -17,7 +14,6 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class ChatActivity : AppCompatActivity() {
 
@@ -82,21 +78,21 @@ class ChatActivity : AppCompatActivity() {
     private fun getIntentData() {
         otherEmail = intent.getStringExtra("otherEmail").toString()
         otherNick = intent.getStringExtra("otherNick").toString()
-        Log.d("otherNick",otherNick)
+        Log.d("otherNick", otherNick)
     }
 
     private fun getPrefer() {
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-        myNick = preferences.getString("myNickName","").toString()
-        myEmail = preferences.getString("myEmail","").toString()
+        myNick = preferences.getString("myNickName", "").toString()
+        myEmail = preferences.getString("myEmail", "").toString()
 
     }
 
     private fun openChat() {
 
-        val listener = object :ChildEventListener{
+        val listener = object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                Log.d("chatAct","onAdd : "+snapshot.value)
+                Log.d("chatAct", "onAdd : " + snapshot.value)
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

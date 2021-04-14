@@ -19,21 +19,20 @@ import retrofit2.Response
 
 class UserInfoUpdate : AppCompatActivity() {
 
-    lateinit var userEmail : String
-    lateinit var userdata : DataModel.UserData
+    lateinit var userdata: DataModel.UserData
     private lateinit var preferences: SharedPreferences
     lateinit var myNick: String
     lateinit var myEmail: String
 
-    lateinit var interestTextArray : Array<TextView>
+    lateinit var interestTextArray: Array<TextView>
 
-    lateinit var updateapi : InterfaceModel.UpdateUserInfo
+    lateinit var updateapi: InterfaceModel.UpdateUserInfo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info_update)
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-        myNick = preferences.getString("myNickName","").toString()
-        myEmail = preferences.getString("myEmail","").toString()
+        myNick = preferences.getString("myNickName", "").toString()
+        myEmail = preferences.getString("myEmail", "").toString()
 
         setText()
 
@@ -43,8 +42,8 @@ class UserInfoUpdate : AppCompatActivity() {
         }
 
         btnSetInterest.setOnClickListener {
-            val intent = Intent(this,SetInterestActivity::class.java)
-            startActivityForResult(intent,1001)
+            val intent = Intent(this, SetInterestActivity::class.java)
+            startActivityForResult(intent, 1001)
         }
     }
 
@@ -52,32 +51,32 @@ class UserInfoUpdate : AppCompatActivity() {
 
         TextNickname.text = myNick
 
-       if(intent.getStringExtra("age") != null){
-          editAge.setText(intent.getStringExtra("age"))
+        if (intent.getStringExtra("age") != null) {
+            editAge.setText(intent.getStringExtra("age"))
 
-      }
-       if(intent.getStringExtra("job") != null){
-          editJob.setText(intent.getStringExtra("job"))
+        }
+        if (intent.getStringExtra("job") != null) {
+            editJob.setText(intent.getStringExtra("job"))
 
-      }
-       if(intent.getStringExtra("interest1") != null){
-           editInterest1.text = intent.getStringExtra("interest1")
+        }
+        if (intent.getStringExtra("interest1") != null) {
+            editInterest1.text = intent.getStringExtra("interest1")
 
-      }
-       if(intent.getStringExtra("interest2") != null){
-           editInterest2.text = intent.getStringExtra("interest2")
+        }
+        if (intent.getStringExtra("interest2") != null) {
+            editInterest2.text = intent.getStringExtra("interest2")
 
-      }
-       if(intent.getStringExtra("interest3") != null){
-           editInterest3.text = intent.getStringExtra("interest3")
+        }
+        if (intent.getStringExtra("interest3") != null) {
+            editInterest3.text = intent.getStringExtra("interest3")
 
-      }
+        }
     }
 
     private fun setInterestList(interestList: ArrayList<String>) {
-        interestTextArray = arrayOf(editInterest1,editInterest2,editInterest3)
+        interestTextArray = arrayOf(editInterest1, editInterest2, editInterest3)
 
-        for (i in interestList.indices){
+        for (i in interestList.indices) {
             interestTextArray[i].text = interestList[i]
         }
     }
@@ -91,28 +90,32 @@ class UserInfoUpdate : AppCompatActivity() {
         val interest2 = editInterest2.text.toString()
         val interest3 = editInterest3.text.toString()
 
-        userdata = DataModel.UserData(email,nickname,age, job, interest1, interest2, interest3)
+        userdata = DataModel.UserData(email, nickname, age, job, interest1, interest2, interest3)
 
         val retrofit = Repository.getApiClient()
 
-        if(retrofit != null){
+        if (retrofit != null) {
             updateapi = retrofit.create(InterfaceModel.UpdateUserInfo::class.java)
 
         }
 
-        val call : Call<ResponseModel.UpdataUserdataResponse> = updateapi.updateUserInfo(userdata)
+        val call: Call<ResponseModel.UpdataUserdataResponse> = updateapi.updateUserInfo(userdata)
 
-        call.enqueue(object : Callback<ResponseModel.UpdataUserdataResponse>{
+        call.enqueue(object : Callback<ResponseModel.UpdataUserdataResponse> {
 
-            override fun onResponse(call: Call<ResponseModel.UpdataUserdataResponse>, response: Response<ResponseModel.UpdataUserdataResponse>) {
+            override fun onResponse(
+                call: Call<ResponseModel.UpdataUserdataResponse>,
+                response: Response<ResponseModel.UpdataUserdataResponse>
+            ) {
 
-                if (response.isSuccessful && response.body() != null){
+                if (response.isSuccessful && response.body() != null) {
 
                     Log.e("onSuccess", response.body()!!.message)
 
 
                 }
             }
+
             override fun onFailure(call: Call<ResponseModel.UpdataUserdataResponse>, t: Throwable) {
 
                 t.message?.let { Log.e("onFailure", it) }
@@ -122,17 +125,18 @@ class UserInfoUpdate : AppCompatActivity() {
         })
 
 
-       finish()
+        finish()
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 1001){
-            if(resultCode == RESULT_OK){
+        if (requestCode == 1001) {
+            if (resultCode == RESULT_OK) {
                 if (data != null) {
-                    val interestList = data.getStringArrayListExtra("interestList") as ArrayList<String>
+                    val interestList =
+                        data.getStringArrayListExtra("interestList") as ArrayList<String>
                     setInterestList(interestList)
                     Log.d("interestList", interestList[0])
                 }

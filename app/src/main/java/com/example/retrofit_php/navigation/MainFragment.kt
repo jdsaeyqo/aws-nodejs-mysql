@@ -11,15 +11,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.retrofit_php.R
 import com.example.retrofit_php.controller.MatchingActivity
-import com.example.retrofit_php.model.DataModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : Fragment() {
 
-
     var fragmentView: View? = null
-    private lateinit var myEmail : String
+    private lateinit var myEmail: String
     lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
@@ -48,9 +46,9 @@ class MainFragment : Fragment() {
     }
 
     private fun userDataUpdate() {
-        preferences = context!!.getSharedPreferences("user",Context.MODE_PRIVATE)
-        myEmail = preferences.getString("myEmail","").toString()
-        Log.d("userData22",myEmail)
+        preferences = context!!.getSharedPreferences("user", Context.MODE_PRIVATE)
+        myEmail = preferences.getString("myEmail", "").toString()
+        Log.d("userData22", myEmail)
     }
 
 
