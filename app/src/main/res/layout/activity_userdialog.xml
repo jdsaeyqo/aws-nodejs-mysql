@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="50dp"
     android:layout_marginVertical="100dp"
-    android:background="#FFFFFF"
+    android:background="@color/purple_200"
     tools:context=".controller.UserDialogActivity">
 
     <ImageView
@@ -16,9 +16,11 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="50dp"
+        android:src="@drawable/ic_person"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+         />
 
     <TextView
         android:textColor="@color/black"
@@ -120,9 +122,8 @@
     <ImageButton
         android:id="@+id/btnLike"
         android:layout_width="40dp"
-
         android:layout_height="40dp"
-        android:background="@color/white"
+        android:background="@color/purple_200"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_favorite_off"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -135,9 +136,10 @@
         android:id="@+id/btnClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#636161"
+        android:background="@color/purple_200"
         android:text="닫기"
         android:textSize="20sp"
+        style="@style/Widget.AppCompat.Button.Borderless"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/btnLike"
         app:layout_constraintRight_toRightOf="parent"

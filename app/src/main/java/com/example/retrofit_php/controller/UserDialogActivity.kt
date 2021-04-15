@@ -120,11 +120,22 @@ class UserDialogActivity : AppCompatActivity() {
                 if (value == null) return@addSnapshotListener
 
                 if (value.data != null) {
+
+
                     val url = value.data!!["imageUri"]
 
-                    if (this.isFinishing) return@addSnapshotListener
-                    Glide.with(this).load(url).apply(RequestOptions().circleCrop())
-                        .into(userProfileImageView)
+                    if(url != null){
+                        if (this.isFinishing) return@addSnapshotListener
+                        Glide.with(this).load(url).apply(RequestOptions().circleCrop())
+                            .into(userProfileImageView)
+                    }else{
+                        userProfileImageView.setImageResource(R.drawable.ic_person)
+                    }
+
+
+
+
+
 
 
                 } else return@addSnapshotListener

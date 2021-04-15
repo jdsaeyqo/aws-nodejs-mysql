@@ -28,6 +28,7 @@
         android:layout_margin="20dp"
         android:fontFamily="@font/font1"
         android:hint="나이"
+        android:inputType="text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TextNickname" />
@@ -39,6 +40,7 @@
         android:layout_margin="20dp"
         android:fontFamily="@font/font1"
         android:hint="직업"
+        android:inputType="text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editAge" />
