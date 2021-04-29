@@ -25,7 +25,6 @@ import retrofit2.Response
 class MatchingFragment : Fragment() {
 
     private var fragmentView : View? = null
-    lateinit var noMatchText : TextView
     lateinit var database : DatabaseReference
     private var iLikeList : MutableList<String> = mutableListOf()
     private var likeMeList : MutableList<String> = mutableListOf()
@@ -40,8 +39,6 @@ class MatchingFragment : Fragment() {
 
     lateinit var myEmail: String
     private var myNick: String = ""
-    lateinit var otherNick : String
-    private lateinit var userData: DataModel.UserData
 
     override fun onCreateView(
         inflater: LayoutInflater,
