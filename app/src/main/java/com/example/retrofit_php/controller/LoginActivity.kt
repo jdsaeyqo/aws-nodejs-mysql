@@ -67,19 +67,21 @@ class LoginActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful && response.body() != null) {
 
-                    Log.e("onSuccess", response.body()!!.message)
-                    Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    Log.e("responseBody", response.body()!!.message)
+                    if(response.body()!!.code == 200){
+                        Toast.makeText(this@LoginActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        val editor = preferences.edit()
+                        editor.putString("myEmail", email)
+                        editor.apply()
 
+                        getMyNickName(email)
 
-                    val editor = preferences.edit()
-                    editor.putString("myEmail", email)
-                    editor.apply()
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }else{
+                        Toast.makeText(this@LoginActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
-                    getMyNickName(email)
+                    }
 
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
                 }
             }
 
