@@ -30,6 +30,21 @@ DB - AWS RDS, MySQL
 - 서로 좋아요 누를 시 채팅 방 생성 : 좋아요 데이터는 FirebaseFireStore 사용
 - 채팅 방은 FireBaseRealTimeDataBase 통해 구현
 
+# Library
+~~~kotlin
 
+//Glide
+implementation 'com.github.bumptech.glide:glide:4.11.0'
 
+//Retrofit2
+implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
+
+//firebase
+implementation 'com.google.firebase:firebase-storage:19.2.2'
+implementation 'com.google.firebase:firebase-firestore:22.1.2'
+implementation 'com.google.firebase:firebase-database:19.7.0'
+
+~~~
 
