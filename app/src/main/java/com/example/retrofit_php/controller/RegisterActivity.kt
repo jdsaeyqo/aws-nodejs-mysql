@@ -47,6 +47,7 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.setOnClickListener {
             doRegister()
 
+
         }
 
         btnToLogin.setOnClickListener {
@@ -55,9 +56,7 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
-
     }
-
 
     private fun checkStoragePermission() {
         when {
@@ -131,6 +130,9 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         val call: Call<ResponseModel.RegisterResponse> = checkapi.checkUserNick(check)
+
+
+
 
         call.enqueue(object : Callback<ResponseModel.RegisterResponse> {
             override fun onResponse(

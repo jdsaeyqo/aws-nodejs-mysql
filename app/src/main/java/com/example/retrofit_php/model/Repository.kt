@@ -19,7 +19,6 @@ object Repository {
             retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-
                 .build()
         }
         return retrofit
