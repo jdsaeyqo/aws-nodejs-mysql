@@ -133,11 +133,6 @@ class UserDialogActivity : AppCompatActivity() {
                     }
 
 
-
-
-
-
-
                 } else return@addSnapshotListener
             }
         }

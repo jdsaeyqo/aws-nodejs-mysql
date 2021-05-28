@@ -27,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE)
         btnToRegister.setOnClickListener {
 

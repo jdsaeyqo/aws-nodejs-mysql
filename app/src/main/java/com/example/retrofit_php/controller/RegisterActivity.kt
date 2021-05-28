@@ -121,6 +121,7 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
+
         val check = DataModel.CheckNickData(myNickName)
 
         val retrofit = Repository.getApiClient()
@@ -130,8 +131,6 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         val call: Call<ResponseModel.RegisterResponse> = checkapi.checkUserNick(check)
-
-
 
 
         call.enqueue(object : Callback<ResponseModel.RegisterResponse> {
@@ -185,6 +184,8 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "빈 칸을 입력해 주세요", Toast.LENGTH_SHORT).show()
             return
         }
+
+
 
         val registerData = DataModel.RegisterData(myNickName, myEmail, password)
 
